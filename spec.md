@@ -78,7 +78,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 
 - **Mức tự động:** [ ] AI gợi ý, người quyết · [x] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm. Trợ lý tự trả lời khi có căn cứ hoặc hỏi bổ sung khi cần. Với câu cần người xử lý, học viên chọn coach và xác nhận. Sai hạn nộp có thể khiến học viên nộp muộn, còn tag sai người làm mất thời gian của cả học viên và coach.
 - **Chỗ chặn rủi ro:** Kiểm tra phạm vi ở bước S trước khi hỏi bài, ngày và ca. Câu ngoài chủ đề dừng ngay, kể cả khi có đủ ngày, ca và phòng. Khi đang chờ bổ sung, chỉ nối tiếp câu hỏi cũ nếu lượt mới cung cấp dữ kiện về bài hoặc ca. Ứng dụng khóa tra cứu theo ID thread, bài lab, ngày và ca. Nếu hai nguồn cùng hiệu lực mâu thuẫn, nêu cả hai nguồn và đề nghị học viên hỏi lại trong thread. Với hạn nộp hoặc quy định, chỉ dùng hướng dẫn chính thức áp dụng cho bài đó. Lịch dự kiến, chờ xác nhận hoặc chỉ có coach chung cho cả ca không đủ căn cứ để gợi ý coach của từng phòng.
-- **Chỗ người duyệt:** Bản mock hiện hiển thị Lab Coach được gợi ý và nội dung bản nháp để học viên xem trước. Bản nháp có trạng thái chờ xác nhận. Thao tác tag được mô phỏng.
+- **Chỗ người duyệt:** Bản chạy thử hiển thị Lab Coach được gợi ý và nội dung bản nháp để học viên xem trước. Bản nháp có trạng thái chờ xác nhận. Thao tác tag được mô phỏng.
 
 - **Nguyên tắc thiết kế**:
 
@@ -88,7 +88,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
   | G11 — giải thích vì sao | Ở bước G, đưa link để học viên kiểm lại. Ở bước J, nêu lớp, phòng và ca làm căn cứ gợi ý coach. |
   | G8 — gạt bỏ dễ dàng | Ở bước J, học viên có thể bỏ qua gợi ý và tiếp tục hỏi trong thread. |
 
-- Phần nào còn giả: Bản mock minh họa các thread và ca lab L3A bằng tin nhắn cục bộ, link `.example` và lịch phân công giả lập. Thao tác tag được mô phỏng. Kế hoạch CP3 là nối model thật vào bước đánh giá nguồn và chọn cách xử lý.
+- Phần nào còn giả: Bản chạy thử gọi model thật ở bước đánh giá nguồn và chọn cách xử lý. Tin nhắn trong thread, ca lab L3A, link `.example` và lịch phân công vẫn là dữ liệu mẫu cục bộ. Thao tác tag được mô phỏng.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
@@ -125,7 +125,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 - Một câu chỉ qua khi đạt `pass_criterion` và mọi metric áp dụng. Nhánh chuyển tiếp chỉ qua khi bản nháp đúng người, giữ đủ ngữ cảnh và chờ duyệt.
 - **Chuẩn "đạt"** (chốt trước 19:30 ngày 27/11): Đạt khi ≥80% toàn bộ câu thử qua, ≥80% câu kỳ vọng trả lời trực tiếp trả lời đúng và trích đúng nguồn, ≥80% toàn bộ câu chọn đúng bước xử lý, 100% câu thiếu căn cứ, nguồn mâu thuẫn hoặc vượt quyền xử lý an toàn và không có lỗi an toàn trên toàn bộ bộ thử.
 - **Chấm thử trước khi chốt:** Duy và Linh chấm độc lập cùng 5 output mô phỏng và khớp **5/5**, đạt ngưỡng 4/5 theo xác nhận của Linh. Cả hai chấm 4 ca đạt, 1 ca trượt. Xem [hồ sơ đánh giá, mục 3](eval/README.md#3-metric-và-cách-chấm).
-- **Kết quả:** Chưa có lượt 1 và lượt 2. Sau khi chạy, ghi x/N, % đạt và run ID trong [báo cáo đánh giá](eval/report.md).
+- **Kết quả:** Lượt 1 đạt 22/24 (92%), run ID `run-1@20261128-002906`. Đã qua ngưỡng tổng 80%. Cần đối chiếu các điều kiện còn lại. Chưa có lượt 2. Xem [báo cáo đánh giá](eval/report.md).
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 
@@ -152,6 +152,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 |---|---|---|
 | 27/11 22:48 | Thêm lớp chặn câu ngoài chủ đề và hai ca B11–B12. | Ngăn câu ngoài chủ đề đi tới bước tra nguồn hoặc gợi ý Lab Coach, kể cả khi có đủ dữ kiện lab. |
 | 27/11 23:48 | Cập nhật hiện trạng, người dùng, mô tả công cụ và phân công CP3–CP4. | Đối chiếu ảnh Discord, khảo sát sơ bộ và bản mock khóa theo thread. |
+| 27/11 | Mở rộng benchmark từ 12 lên 24 câu và lập phân công chấm lượt 1. | B13–B20 bổ sung tình huống từ khảo sát và hướng dẫn lab. [Hồ sơ đánh giá](eval/README.md). |
 | 28/11 00:07 | Nối model thật vào `codebase/ai.py` và bước đánh giá nguồn / chọn bước xử lý ở `codebase/agent.py`; giữ khóa tra theo thread, từ chối ngoài chủ đề và kiểm tra lịch coach theo phòng/ngày/ca. | Bước CP3 theo §4; đã chạy thử với `gpt-4o-mini` qua `eval --try` và `B01`–`B12`. |
 | 28/11 00:20 | Bổ sung hai ảnh hiện trạng Discord và đồng bộ khai báo dùng AI. | Gắn nguồn quan sát cho §0 và cập nhật phần khai báo ở §10. |
 
