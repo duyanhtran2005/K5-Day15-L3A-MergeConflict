@@ -1,9 +1,11 @@
 """Luồng thử hỗ trợ học viên trong thread của một phòng lab."""
 
+import json
 import re
 import unicodedata
 from datetime import date, timedelta
 
+from ai import call_model, current_provider
 from tools import lookup_lab_coach, search_lab_thread
 from tracing import note
 
@@ -16,6 +18,7 @@ LAB_SCOPE = re.compile(r"\b(?:lab|bai thuc hanh|bai nay|de bai)\b")
 DATE_REFERENCE = re.compile(r"(?<!\d)(\d{1,2})/(\d{1,2})(?:/(\d{4}))?(?![\d/])")
 RELATIVE_DATE = re.compile(r"\b(?:hom|sang|chieu|toi|ngay) (qua|nay|mai)\b")
 DETAIL_WORDS = re.compile(r"\b(?:ngay|ca|buoi|sang|chieu|toi|da|em|minh|hoi|la|a|nhe)\b")
+URL_PATTERN = re.compile(r"https?://[^\s)\]>\"']+")
 SHIFTS = {"sang": "sáng", "chieu": "chiều", "toi": "tối"}
 
 BRANCH_LABELS = {
@@ -24,6 +27,20 @@ BRANCH_LABELS = {
     "draft_handoff": "Nhánh 3 — Hỗ trợ tiếp trong thread",
     "refuse": "Từ chối yêu cầu vượt phạm vi",
 }
+
+SOURCE_EVAL_SYSTEM = """Bạn là bước đánh giá nguồn và chọn bước xử lý cho trợ lý hỗ trợ học viên AI20K trong thread phòng lab.
+Chỉ dựa vào dữ liệu JSON đầu vào (ngữ cảnh thread hiện tại, câu hỏi và retrieved_sources.active / has_stale).
+Tuyệt đối KHÔNG bịa ngày, giờ, link, tên repo, tên coach hoặc dữ kiện từ thread khác.
+
+Chọn đúng một giá trị cho "action":
+1. "answer_with_sources": Chỉ chọn khi retrieved_sources.active có nguồn rõ ràng, không mâu thuẫn và trả lời trực tiếp cho đúng bài lab, ngày và ca đang hỏi. Viết "reply" ngắn gọn bằng tiếng Việt, giữ nguyên chính xác giờ, ngày (dd/mm/YYYY), mẫu tên và link từ nguồn; liệt kê mã nguồn đã dùng vào "cited_codes".
+2. "conflicting_sources": Chọn khi retrieved_sources.active có từ 2 nguồn trở lên nhưng thông tin mâu thuẫn nhau cho cùng ca đang hỏi. KHÔNG tự chọn một đáp án; nêu ngắn gọn điểm mâu thuẫn ở "reason" và liệt kê các mã vào "cited_codes".
+3. "insufficient_sources": Chọn khi retrieved_sources.active rỗng hoặc không trả lời đúng câu hỏi/bài/ngày/ca đang hỏi (kể cả khi has_stale=true, nghĩa là nguồn chỉ áp dụng cho ngày hoặc ca khác). Viết "reason" ngắn gọn bằng tiếng Việt nêu cụ thể đang thiếu thông tin/nội dung gì (theo đúng câu hỏi, bài lab, ngày, ca) trong thread hiện tại (ghi rõ mã thread_id, vd: trong thread 3A-LAB-C302). Nếu has_stale=true, nêu rõ nguồn hiện có chỉ áp dụng cho ngày/ca khác và KHÔNG khẳng định thông tin của ca đang hỏi. Chỉ nhận xét về nguồn tin nhắn trong thread — KHÔNG tự kết luận là có hay không có coach vì hệ thống sẽ tra lịch ở bước kế tiếp.
+4. "ask_clarification": Chỉ chọn khi câu hỏi còn chi tiết mơ hồ cần học viên làm rõ thêm mới đối chiếu được nguồn.
+5. "refuse": Chỉ chọn khi câu hỏi thực chất nằm ngoài phạm vi hỗ trợ buổi lab hoặc yêu cầu thông tin nội bộ / ngoài thread hiện tại.
+
+Chỉ trả về DUY NHẤT một JSON object hợp lệ gồm 4 khoá:
+{"action": "...", "reason": "...", "cited_codes": ["..."], "reply": "..."}"""
 
 
 def _normalize(text: str) -> str:
@@ -78,7 +95,8 @@ def _session_shift(text: str, query: str) -> str | None:
 def _result(decision: str, message: str, **details) -> dict:
     label = BRANCH_LABELS[decision]
     note(label)
-    return {"output": f"[Mock CP2 · dữ liệu mẫu]\n{label}\n{message}", "decision": decision, **details}
+    prefix = "[Mock CP2 · dữ liệu mẫu]" if current_provider() == "fake" else "[Trợ lý lab · dữ liệu mẫu]"
+    return {"output": f"{prefix}\n{label}\n{message}", "decision": decision, **details}
 
 
 def _clarify(context: dict, message: str) -> dict:
@@ -114,6 +132,207 @@ def _is_detail_reply(question: str, query: str) -> bool:
     return not DETAIL_WORDS.sub(" ", remaining).strip()
 
 
+def _extract_json_object(raw: str) -> dict | None:
+    """Trích JSON object hợp lệ đầu tiên từ phản hồi của model."""
+    text = (raw or "").strip()
+    if text.startswith("```"):
+        text = re.sub(r"^```(?:json)?\s*|\s*```$", "", text, flags=re.IGNORECASE | re.DOTALL).strip()
+    start = text.find("{")
+    if start == -1:
+        return None
+    depth = 0
+    in_string = False
+    escaped = False
+    for idx in range(start, len(text)):
+        ch = text[idx]
+        if escaped:
+            escaped = False
+            continue
+        if ch == "\\" and in_string:
+            escaped = True
+            continue
+        if ch == '"':
+            in_string = not in_string
+        elif not in_string:
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    try:
+                        parsed = json.loads(text[start:idx + 1])
+                        return parsed if isinstance(parsed, dict) else None
+                    except ValueError:
+                        return None
+    return None
+
+
+def _sanitize_urls(text: str, allowed_urls: set[str]) -> str:
+    """Loại bỏ mọi URL không nằm trong nguồn hợp lệ vừa tra từ thread hiện tại."""
+    def _check(match: re.Match) -> str:
+        raw_url = match.group(0)
+        trimmed = raw_url.rstrip(".,;:!?")
+        suffix = raw_url[len(trimmed):]
+        if trimmed in allowed_urls:
+            return raw_url
+        return "[đã loại link ngoài nguồn]" + suffix
+
+    return URL_PATTERN.sub(_check, text or "").strip()
+
+
+def _fallback_eval_decision(sources: dict, thread_id: str) -> dict:
+    """Đánh giá nguồn theo quy tắc cố định khi ở chế độ fake hoặc cần dự phòng."""
+    active = sources["active"]
+    if len(active) == 1:
+        source = active[0]
+        return {
+            "action": "answer_with_sources",
+            "reason": f"Đã tìm thấy nguồn khớp ca hỏi trong thread {thread_id}.",
+            "cited_codes": [source["code"]],
+            "reply": source["text"],
+        }
+    if len(active) > 1:
+        return {
+            "action": "conflicting_sources",
+            "reason": "Các nguồn còn mâu thuẫn, chưa xác định được thông báo thay thế.",
+            "cited_codes": [s["code"] for s in active],
+            "reply": "",
+        }
+    reason = (
+        "Nguồn tìm được đã cũ hoặc thuộc ngày/ca khác. Chưa xác minh được thông tin của ca đang hỏi."
+        if sources["has_stale"]
+        else f"Chưa đủ căn cứ trong thread {thread_id}."
+    )
+    return {"action": "insufficient_sources", "reason": reason, "cited_codes": [], "reply": ""}
+
+
+def _evaluate_sources(context: dict, room: str, sources: dict) -> dict:
+    """Gọi model đánh giá các nguồn đã tra trong thread và chọn bước xử lý."""
+    thread_id = context["thread_id"]
+    payload = json.dumps(
+        {
+            "thread_id": thread_id,
+            "room": room,
+            "class": f"L{thread_id[:2]}",
+            "lab_id": context["lab_id"],
+            "session_date": context["session_date"],
+            "shift": context["shift"],
+            "topic": context["topic"],
+            "student_question": _mask_contact(context["question"]),
+            "retrieved_sources": {
+                "active": sources["active"],
+                "has_stale": sources["has_stale"],
+            },
+        },
+        ensure_ascii=False,
+        indent=2,
+    )
+    model_resp = call_model(SOURCE_EVAL_SYSTEM, payload)
+    raw_text = model_resp.get("text", "")
+    if model_resp.get("model") == "fake" or raw_text.startswith("[câu trả lời giả"):
+        return _fallback_eval_decision(sources, thread_id)
+
+    parsed = _extract_json_object(raw_text)
+    if not parsed or parsed.get("action") not in {
+        "answer_with_sources",
+        "conflicting_sources",
+        "insufficient_sources",
+        "ask_clarification",
+        "refuse",
+    }:
+        note("Phản hồi đánh giá nguồn không hợp lệ — dùng quy tắc dự phòng")
+        return _fallback_eval_decision(sources, thread_id)
+    return parsed
+
+
+def _apply_source_decision(context: dict, room: str, sources: dict, evaluated: dict) -> dict:
+    """Thực thi bước xử lý đã chọn với kiểm tra an toàn theo nguồn và lịch phân công."""
+    thread_id = context["thread_id"]
+    lab_id = context["lab_id"]
+    session_date = context["session_date"]
+    shift = context["shift"]
+    active = sources["active"]
+    by_code = {s["code"]: s for s in active}
+    allowed_urls = {s["source_url"] for s in active}
+
+    action = evaluated.get("action")
+    raw_reply = (evaluated.get("reply") or "").strip()
+    raw_reason = (evaluated.get("reason") or "").strip()
+    cited_codes = [c for c in (evaluated.get("cited_codes") or []) if isinstance(c, str) and c in by_code]
+
+    if action == "refuse":
+        return _result("refuse", _sanitize_urls(raw_reply, set()) or "Mình chỉ hỗ trợ câu hỏi về buổi lab trong thread này.")
+
+    if action == "ask_clarification":
+        return _clarify(context, _sanitize_urls(raw_reply, set()) or "Bạn nói rõ thêm chi tiết để mình kiểm tra lại trong thread nhé.")
+
+    if action == "answer_with_sources" and not active:
+        action = "insufficient_sources"
+    elif action == "answer_with_sources" and len(active) > 1 and context["topic"] in {"han_nop_lab", "ten_repo_lab"}:
+        action = "conflicting_sources"
+
+    if action == "answer_with_sources":
+        citations = [by_code[c] for c in cited_codes] or active[:1]
+        citation_urls = {s["source_url"] for s in citations}
+        body = _sanitize_urls(raw_reply, citation_urls) or citations[0]["text"]
+        footer = "\n".join(
+            f'Nguồn mẫu: {s["code"]} ({s["text"]}) · {s["source_url"]}'
+            for s in citations
+            if s["source_url"] not in body or s["text"] not in body
+        )
+        message = body if not footer else f"{body}\n{footer}"
+        return _result("answer_with_sources", message, citations=citations)
+
+    if action == "conflicting_sources" and len(active) >= 2:
+        summary = _sanitize_urls(raw_reason or raw_reply, allowed_urls) or "Các nguồn còn mâu thuẫn, chưa xác định được thông báo thay thế."
+        choices = "\n".join(f'- [{s["code"]}] {s["text"]} · {s["source_url"]}' for s in active)
+        return _result(
+            "draft_handoff",
+            f"{summary}\n{choices}\nBạn có thể hỏi lại ngay trong thread này để xác nhận.",
+            citations=active,
+        )
+
+    stale_note = "Nguồn tìm được đã cũ hoặc thuộc ngày/ca khác. Chưa xác minh được thông tin của ca đang hỏi."
+    reason = _sanitize_urls(raw_reason, set())
+    if sources["has_stale"]:
+        if not reason:
+            reason = stale_note
+        elif not any(tok in reason.casefold() for tok in ("ca khác", "ngày/ca khác", "không khớp", "chỉ áp dụng")):
+            reason = f"{reason}\n{stale_note}"
+    elif not reason:
+        reason = f"Chưa đủ căn cứ trong thread {thread_id}."
+
+    class_id = f"L{thread_id[:2]}"
+    coaches = lookup_lab_coach(class_id, room, session_date, shift)
+    if not coaches:
+        return _result("draft_handoff", f"{reason}\nChưa xác minh được Lab Coach phụ trách phòng {room}. Bạn có thể tiếp tục hỏi trong thread {thread_id}.")
+
+    handoff_reason = reason
+    if "coach" in handoff_reason.casefold() and any(w in handoff_reason.casefold() for w in ("không có", "chưa có")):
+        handoff_reason = f"Chưa có thông báo hoặc giải đáp sẵn cho vướng mắc này trong thread {thread_id}."
+
+    draft = {
+        "question": _mask_contact(context["question"]),
+        "thread_id": thread_id,
+        "lab_id": lab_id,
+        "class": class_id,
+        "room": room,
+        "date": session_date,
+        "shift": shift,
+        "coaches": coaches,
+        "reason": handoff_reason,
+        "status": "pending_approval",
+    }
+    return _result(
+        "draft_handoff",
+        f"{handoff_reason}\nLab Coach mẫu: {', '.join(coaches)} · {class_id} · {room} · ca {shift} ngày "
+        f"{date.fromisoformat(session_date):%d/%m/%Y}."
+        f"\nCâu hỏi: {draft['question']}"
+        "\nHọc viên chọn người và xác nhận tag mô phỏng. Chưa gửi tag.",
+        draft_handoff=draft,
+    )
+
+
 def answer(text: str, *, clarification: dict | None = None) -> dict:
     """Nhận ngữ cảnh thread mô phỏng ở đầu input CLI/eval, tách riêng khỏi lời hỏi."""
     incoming = text.strip()
@@ -126,7 +345,10 @@ def answer(text: str, *, clarification: dict | None = None) -> dict:
     question = incoming[header.end():] if header else incoming
     query = _normalize(question)
 
-    if re.search(r"\b(?:(?:danh sach|bang) phan cong noi bo|danh ba rieng|so dien thoai rieng|email rieng)\b", query):
+    if re.search(
+        r"\b(?:(?:danh sach|bang) phan cong noi bo|danh ba rieng|(?:so dien thoai|sdt|email|thong tin lien he) (?:rieng|ca nhan))\b",
+        query,
+    ):
         return _result("refuse", "Thông tin nội bộ chỉ dành cho người có quyền. Bạn có thể hỏi qua thread lab dành cho học viên.")
 
     mentioned_rooms = {f"{letter.upper()}{number}" for letter, number in ROOM_CODE.findall(query)}
@@ -168,46 +390,6 @@ def answer(text: str, *, clarification: dict | None = None) -> dict:
         if not context[key]:
             return _clarify(context, prompt)
 
-    lab_id = context["lab_id"]
-    session_date = context["session_date"]
-    shift = context["shift"]
-    sources = search_lab_thread(thread_id, lab_id, session_date, shift, context["topic"])
-    active = sources["active"]
-    if len(active) == 1:
-        source = active[0]
-        return _result("answer_with_sources", f'{source["text"]}\nNguồn mẫu: {source["code"]} · {source["source_url"]}',
-                       citations=active)
-    if len(active) > 1:
-        choices = "\n".join(f'- {source["text"]} · {source["source_url"]}' for source in active)
-        return _result("draft_handoff",
-                       f"Các nguồn còn mâu thuẫn, chưa xác định được thông báo thay thế.\n{choices}"
-                       "\nBạn có thể hỏi lại ngay trong thread này để xác nhận.",
-                       citations=active)
-
-    reason = ("Nguồn tìm được đã cũ hoặc thuộc ngày/ca khác. Chưa xác minh được thông tin của ca đang hỏi."
-              if sources["has_stale"] else f"Chưa đủ căn cứ trong thread {thread_id}.")
-    class_id = f"L{thread_id[:2]}"
-    coaches = lookup_lab_coach(class_id, room, session_date, shift)
-    if not coaches:
-        return _result("draft_handoff", f"{reason}\nChưa xác minh được Lab Coach phụ trách phòng {room}. Bạn có thể tiếp tục hỏi trong thread này.")
-
-    draft = {
-        "question": _mask_contact(context["question"]),
-        "thread_id": thread_id,
-        "lab_id": lab_id,
-        "class": class_id,
-        "room": room,
-        "date": session_date,
-        "shift": shift,
-        "coaches": coaches,
-        "reason": reason,
-        "status": "pending_approval",
-    }
-    return _result(
-        "draft_handoff",
-        f"{reason}\nLab Coach mẫu: {', '.join(coaches)} · {class_id} · {room} · ca {shift} ngày "
-        f"{date.fromisoformat(session_date):%d/%m/%Y}."
-        f"\nCâu hỏi: {draft['question']}"
-        "\nHọc viên chọn người và xác nhận tag mô phỏng. Chưa gửi tag.",
-        draft_handoff=draft,
-    )
+    sources = search_lab_thread(thread_id, context["lab_id"], context["session_date"], context["shift"], context["topic"])
+    evaluated = _evaluate_sources(context, room, sources)
+    return _apply_source_decision(context, room, sources, evaluated)

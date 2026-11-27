@@ -146,7 +146,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 
 | Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
 |---|---|---|
-| Chưa đến CP2 | Chưa có thay đổi sau CP2 | |
+| 28/11/2026 00:07 | Nối model thật vào `codebase/ai.py` và bước đánh giá nguồn / chọn bước xử lý ở `codebase/agent.py`; giữ khóa tra theo thread, từ chối ngoài chủ đề và kiểm tra lịch coach theo phòng/ngày/ca | Bước CP3 theo §4; đã chạy thử với `gpt-4o-mini` qua `eval --try` và `B01`–`B12` |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
