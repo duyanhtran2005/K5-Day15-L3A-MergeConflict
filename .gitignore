@@ -1,0 +1,25 @@
+# Secrets & local runtime config
+.env
+.env.*
+!.env.example
+.impeccable/config.local.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local runtime state generated while running UI demos
+data/handoff_queue.json
+
+# Temporary non-numbered eval/simulate outputs
+eval/run-try.csv
+eval/run-fake.csv
+eval/run-mock.csv
+eval/run-error.csv
+eval/run-stopped.csv
+traces/run-try.jsonl
+traces/run-fake.jsonl
+traces/run-mock.jsonl
+traces/run-error.jsonl
+traces/run-stopped.jsonl

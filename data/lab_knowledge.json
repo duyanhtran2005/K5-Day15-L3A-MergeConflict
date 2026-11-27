@@ -1,0 +1,288 @@
+{
+  "metadata": {
+    "dataset_name": "Track A2 Lab Support Demo Knowledge Base (Synthetic)",
+    "cohort": "AI20K L3A",
+    "day": "Day 15",
+    "synthetic": true,
+    "note": "Dữ liệu mô phỏng có cấu trúc dựa trên quy định chung trong khung repo hackathon để chạy thử bản demo; không chứa thông tin cá nhân thật."
+  },
+  "announcements": [
+    {
+      "code": "TB-LAB15-01",
+      "title": "Lịch nộp các mốc Checkpoint Day 15 (CP1–CP4 & Reflection)",
+      "category": "deadline",
+      "status": "active",
+      "effective_date": "2026-11-27",
+      "source_ref": "Thông báo chính thức Day 15 · spec.md & canvas.md",
+      "keywords": [
+        "hạn nộp",
+        "deadline",
+        "mấy giờ",
+        "checkpoint",
+        "cp1",
+        "cp2",
+        "cp3",
+        "cp4",
+        "reflection",
+        "thời hạn",
+        "nộp bài",
+        "hôm nay"
+      ],
+      "summary": "CP1 chốt lúc 17:00 và CP2 lúc 19:30 Thứ Sáu 27/11; CP3 lúc 10:00 và CP4 lúc 14:30 Thứ Bảy 28/11; Reflection hạn 23:59 Thứ Bảy 28/11.",
+      "details": [
+        "CP1 (17:00 Thứ Sáu 27/11): Nộp link repo Public đúng tên, TEAMS.md chuẩn format và canvas.md bản đầu đủ 7 dòng.",
+        "CP2 (19:30 Thứ Sáu 27/11): Cập nhật canvas.md, chốt chuẩn đạt ở spec.md §7, eval/metric_spec.yaml (>=3 metric), eval/benchmark.csv (>=10 câu) và khung codebase/ chạy thông luồng.",
+        "CP3 (10:00 Thứ Bảy 28/11): Hoàn thành evidence/summary.md, spec.md §0–§7, benchmark 20–30 câu, nối model thật và chạy eval lượt 1.",
+        "CP4 (14:30 Thứ Bảy 28/11): Hoàn thành spec.md §0–§10, eval lượt 2, mô phỏng chi phí cost/, slide demo-slides.pdf và link video dự phòng.",
+        "Cuối ngày (23:59 Thứ Bảy 28/11): Nộp reflection/<ten-khong-dau>.md và cập nhật changelog §10."
+      ]
+    },
+    {
+      "code": "HD-REPO-02",
+      "title": "Quy tắc đặt tên & khởi tạo Repository nhóm L3A",
+      "category": "repo",
+      "status": "active",
+      "effective_date": "2026-11-27",
+      "source_ref": "Hướng dẫn tạo repo · README.md Mục 0",
+      "keywords": [
+        "đặt tên repo",
+        "tên repo",
+        "repository",
+        "github",
+        "public",
+        "tạo repo",
+        "collaborators",
+        "gitignore",
+        "k5-day15",
+        "nhánh",
+        "commit"
+      ],
+      "summary": "Repo phải đặt ở chế độ Public theo đúng mẫu K5-Day15-<lớp>-<tên nhóm> (với L3A là K5-Day15-L3A-<TenNhom>, viết liền không dấu).",
+      "details": [
+        "Tên chuẩn: K5-Day15-L3A-<TenNhom> (ví dụ: K5-Day15-L3A-MergeConflict), viết liền, không dấu, không khoảng trắng.",
+        "Chế độ hiển thị: Bắt buộc công khai (Public), kiểm tra bằng cửa sổ ẩn danh.",
+        "Cấu trúc trang đầu repo: Chép toàn bộ nội dung bên trong starter-repo/ để README.md và run.py nằm ngay thư mục gốc, kèm file ẩn .gitignore và .env.example.",
+        "Bảo mật: Tuyệt đối không commit .env, API key, dữ liệu cá nhân thật hay nguyên file data BTC cấp."
+      ]
+    },
+    {
+      "code": "HD-LMS-03",
+      "title": "Nơi xem hướng dẫn Lab chiều nay & kênh nộp/hỗ trợ L3A",
+      "category": "portal",
+      "status": "active",
+      "effective_date": "2026-11-27",
+      "source_ref": "Hướng dẫn học vụ L3A · README.md & canvas.md",
+      "keywords": [
+        "lms",
+        "github chương trình",
+        "xem hướng dẫn",
+        "đề bài",
+        "tài liệu lab",
+        "kênh hỗ trợ",
+        "hỏi ở đâu",
+        "chiều nay",
+        "hướng dẫn lab",
+        "guide",
+        "rubric"
+      ],
+      "summary": "Đề bài chi tiết (02-guide.md, 03-rubric.md) và bộ khung starter-repo nằm trên GitHub chương trình; thông báo lớp và form nộp các mốc CP1–CP4 theo dõi trên LMS lớp L3A.",
+      "details": [
+        "GitHub chương trình (repo đề BTC phát): Xem README.md, 02-guide.md, 03-rubric.md, further-reading/model-prices.md và thư mục starter-repo/.",
+        "LMS lớp AI20K L3A: Xem thông báo lịch phòng Zoom/Zone, link form nộp checkpoint CP1–CP4 và cập nhật đột xuất từ điều phối.",
+        "Kênh hỗ trợ trực tiếp buổi lab: Kênh hỗ trợ L3A (#l3a-lab-support) hoặc gửi yêu cầu qua cổng này để điều phối duyệt chuyển tới Coach trực ca."
+      ]
+    },
+    {
+      "code": "HD-MODEL-04",
+      "title": "Hướng dẫn nối Model AI thật & khắc phục lỗi API thường gặp",
+      "category": "setup",
+      "status": "active",
+      "effective_date": "2026-11-27",
+      "source_ref": "Tài liệu kỹ thuật · docs/connect-model.md",
+      "keywords": [
+        "nối model",
+        "api key",
+        ".env",
+        "401",
+        "403",
+        "429",
+        "400",
+        "fake",
+        "token",
+        "openai",
+        "claude",
+        "gemini",
+        "ollama",
+        "connect-model"
+      ],
+      "summary": "Điền MODEL_PROVIDER, MODEL_NAME, API_KEY vào .env (chép từ .env.example), hoàn thành tối 27/11 trước khi chạy eval/simulate.",
+      "details": [
+        "Tạo .env từ .env.example và điền 3 dòng không có dấu ngoặc kép hoặc khoảng trắng thừa.",
+        "Thử kết nối bằng `python run.py` và `python run.py eval --try` để kiểm tra token vào/ra > 0.",
+        "Lỗi HTTP 429 (rate limit): Thêm cờ `--wait 4` sau lệnh `python run.py eval` hoặc `simulate`.",
+        "Lỗi HTTP 401/403 hoặc lộ key: Kiểm tra lại key trong .env; nếu lỡ push key lên repo công khai phải thu hồi (revoke) key ngay trên trang nhà cung cấp."
+      ]
+    },
+    {
+      "code": "HD-CHECK-05",
+      "title": "Lệnh kiểm tra khung đánh giá & quy định TEAMS.md",
+      "category": "eval",
+      "status": "active",
+      "effective_date": "2026-11-27",
+      "source_ref": "Quy chuẩn nộp bài · README.md & TEAMS.md",
+      "keywords": [
+        "run.py",
+        "check",
+        "teams.md",
+        "benchmark",
+        "metric",
+        "score",
+        "simulate",
+        "lỗi format",
+        "mã học viên",
+        "đội trưởng"
+      ],
+      "summary": "Dùng `python run.py check` để rà TEAMS.md, eval/benchmark.csv và eval/metric_spec.yaml trước CP2; Đội trưởng đứng ở dòng 1 trong TEAMS.md.",
+      "details": [
+        "TEAMS.md: Đội trưởng ở dòng 1 ghi đúng chữ `Đội trưởng`, thành viên ghi `Thành viên`, mã học viên không khoảng trắng.",
+        "eval/benchmark.csv: Đủ 6 cột, phân bổ thuong/kho/tu_choi, tối thiểu 1/3 câu từ người dùng hoặc data thật.",
+        "eval/metric_spec.yaml: Tối thiểu 3 metric kiểm chứng được và phải chốt trước CP2 19:30 Thứ Sáu 27/11."
+      ]
+    },
+    {
+      "code": "TB-LAB14-OLD",
+      "title": "Thông báo cũ Day 14 (Đã hết hiệu lực)",
+      "category": "deadline",
+      "status": "expired",
+      "effective_date": "2026-11-26",
+      "source_ref": "Lưu trữ Day 14 (Đã thay thế bởi TB-LAB15-01)",
+      "keywords": [
+        "day 14",
+        "hôm qua",
+        "lịch cũ",
+        "chi phí ngày 14"
+      ],
+      "summary": "Lịch lab Day 14 đã kết thúc ngày 26/11 và không còn hiệu lực áp dụng cho bài hackathon Day 15.",
+      "details": [
+        "Các mốc giờ nộp của Day 14 đã đóng. Học viên cần dùng thông báo TB-LAB15-01 cho buổi lab hôm nay."
+      ]
+    }
+  ],
+  "coach_roster": [
+    {
+      "coach_id": "COACH-GIT-L3A",
+      "role_title": "Coach Git, Repo & Nộp bài L3A",
+      "shift": "Ca chiều & tối 27/11 (14:00–21:00)",
+      "topics": [
+        "git",
+        "push",
+        "conflict",
+        "merge",
+        "403",
+        "permission",
+        "collaborators",
+        "public",
+        "github",
+        "branch",
+        "clone",
+        "nộp bài",
+        "form",
+        "lms"
+      ],
+      "channel": "#l3a-git-repo-help",
+      "sla": "Phản hồi dự kiến 5–10 phút trong giờ lab",
+      "availability": "online"
+    },
+    {
+      "coach_id": "COACH-MODEL-L3A",
+      "role_title": "Coach Prototype & Tích hợp Model",
+      "shift": "Ca chiều & tối 27/11 (14:00–22:00)",
+      "topics": [
+        "api",
+        "model",
+        "openai",
+        "claude",
+        "gemini",
+        "ollama",
+        "401",
+        "400",
+        "429",
+        "key",
+        "python",
+        "trace",
+        "token",
+        "code",
+        "lỗi chạy"
+      ],
+      "channel": "#l3a-model-debug",
+      "sla": "Phản hồi dự kiến 10–15 phút",
+      "availability": "online"
+    },
+    {
+      "coach_id": "COACH-EVAL-L3A",
+      "role_title": "Coach Benchmark, Metric & Chi phí",
+      "shift": "Ca tối 27/11 & sáng 28/11",
+      "topics": [
+        "benchmark",
+        "metric",
+        "eval",
+        "simulate",
+        "persona",
+        "chấm",
+        "pass",
+        "bằng chứng",
+        "phỏng vấn",
+        "spec"
+      ],
+      "channel": "#l3a-eval-evidence",
+      "sla": "Phản hồi dự kiến 10–15 phút",
+      "availability": "online"
+    },
+    {
+      "coach_id": "COORD-L3A",
+      "role_title": "Điều phối viên lớp AI20K L3A",
+      "shift": "Trực xuyên suốt Day 15",
+      "topics": [
+        "đổi thành viên",
+        "thiếu người",
+        "nhóm",
+        "xin gia hạn",
+        "điểm danh",
+        "phòng zoom",
+        "zone",
+        "khẩn cấp"
+      ],
+      "channel": "#l3a-coordinator-desk",
+      "sla": "Cần xác nhận từ điều phối trước khi phản hồi",
+      "availability": "online"
+    }
+  ],
+  "initial_demo_drafts": [
+    {
+      "draft_id": "DRF-L3A-001",
+      "created_at": "2026-11-27 16:40",
+      "question": "Nhóm em push nhầm branch và bị báo lỗi quyền truy cập GitHub trước giờ CP1, cần coach kiểm tra giúp.",
+      "coach_id": "COACH-GIT-L3A",
+      "coach_role": "Coach Git, Repo & Nộp bài L3A",
+      "channel": "#l3a-git-repo-help",
+      "reason": "Sự cố thao tác Git/quyền repo cần kiểm tra trực tiếp trên máy học viên.",
+      "draft_message": "[L3A · Chờ điều phối duyệt] Học viên gặp lỗi quyền truy cập khi push repo nhóm trước mốc CP1 (17:00). Đề xuất chuyển Coach Git (#l3a-git-repo-help) hỗ trợ kiểm tra remote và collaborator.",
+      "status": "pending_approval",
+      "coordinator_note": "",
+      "synthetic": true
+    },
+    {
+      "draft_id": "DRF-L3A-002",
+      "created_at": "2026-11-27 16:48",
+      "question": "Em dùng Gemini API key bị báo HTTP 429 liên tục khi chạy thử eval.",
+      "coach_id": "COACH-MODEL-L3A",
+      "coach_role": "Coach Prototype & Tích hợp Model",
+      "channel": "#l3a-model-debug",
+      "reason": "Cần hướng dẫn thêm cờ --wait hoặc kiểm tra quota gói miễn phí.",
+      "draft_message": "[L3A · Chờ điều phối duyệt] Học viên gặp HTTP 429 khi chạy eval với API key cá nhân. Đề xuất Coach Model (#l3a-model-debug) hướng dẫn thêm `--wait 4` và kiểm tra quota.",
+      "status": "approved",
+      "coordinator_note": "Đã duyệt gửi kèm nhắc thử `python run.py eval --try --wait 4`.",
+      "synthetic": true
+    }
+  ]
+}
