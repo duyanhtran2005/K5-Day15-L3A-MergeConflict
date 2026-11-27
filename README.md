@@ -68,19 +68,17 @@ Gõ `dir` (Windows) hoặc `ls` (macOS / Linux): thấy `run.py` và `README.md`
 
 - Windows: gõ `python` mà mở Microsoft Store hoặc báo không có lệnh → dùng `py`. Chưa có Python: cài từ python.org, **tick "Add python.exe to PATH"**, mở lại PowerShell.
 - macOS: báo `command not found: python` là bình thường → dùng `python3`.
-- `python run.py` mở bản mock dòng lệnh và in tên nhánh cùng lý do chọn sau mỗi lượt hỏi. Mốc ngày của dữ liệu mẫu là **27/11/2026**.
+- `python run.py` mở bản mô phỏng dòng lệnh. Nhập tiền tố `[Thread: ...]` để mô phỏng thread mà Discord cung cấp cho ứng dụng. Câu hỏi và phạm vi thread là hai phần riêng trong bản thử.
 
 ### Thử ba nhánh hỗ trợ lab
 
 | Nhập vào `python run.py` | Kết quả mẫu |
 |---|---|
-| Lab 10 hạn nộp lúc nào? | Nhánh 1. Trả hạn nộp và link đến thông báo mẫu. |
-| Cho em xin hạn nộp lab với. | Nhánh 2. Hỏi số lab. Gõ tiếp “Lab 10” để tra hạn nộp. |
-| Em xem hướng dẫn rồi nhưng vẫn không truy cập được tài liệu Lab 10 chiều nay. | Nhánh 3. Hiện bản nháp có câu hỏi, ca lab và coach mẫu để điều phối viên duyệt. |
+| `[Thread: 3A-LAB-C302] Lab 10 chiều 27/04/2027 hạn nộp lúc nào?` | Trả hạn nộp và link đến thông báo mẫu trong C302. |
+| `[Thread: 3A-LAB-C302] Cho em xin hạn nộp lab với.` | Hỏi bài lab nào. Gõ tiếp `Lab 10 chiều 27/04/2027` để trả lời trong cùng thread. |
+| `[Thread: 3A-LAB-C204] Em không truy cập được tài liệu Lab 13 sáng 05/05/2027. Em hỏi coach nào?` | Gợi ý coach đúng phòng và hiển thị bản nháp để học viên xác nhận tag mô phỏng. |
 
-“Cho mình hỏi đặt tên repo như thế nào?” cũng hỏi số lab. “Lab chiều nay xem trên LMS hay GitHub?” tra thông báo của ca chiều. Đổi “chiều nay” thành “sáng nay” trong câu sự cố truy cập để xem trường hợp lịch chưa xác nhận người phụ trách.
-
-Mọi thông báo và phân công trong bản mock đều là [dữ liệu tổng hợp](data/mock_lab_support.json). Luồng chạy bằng quy tắc và thư viện chuẩn Python. Tài liệu cho bước tích hợp model của nhóm có ở [docs/connect-model.md](docs/connect-model.md).
+Bản mock đọc [tin nhắn phòng lab](data/lab_thread_messages.csv) và [lịch phân công](data/lab_coach_assignments.csv). Ngày nhập dạng ngày/tháng được hiểu theo năm 2027 của bộ dữ liệu thử. Nội dung và link minh họa là dữ liệu mẫu. Bản chạy thử thực hiện tra cứu cục bộ và hiển thị bản nháp trên màn hình.
 
 Trong README này lệnh viết là `python …`; máy nhóm cần `python3` hay `py` thì gõ thay.
 

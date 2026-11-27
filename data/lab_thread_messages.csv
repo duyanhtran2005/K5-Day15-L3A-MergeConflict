@@ -1,0 +1,7 @@
+message_id,thread_id,lab,date,session,source_status,text,url
+C302-01,3A-LAB-C302,LAB 10,2027-04-27,chiều,official,"Lab 10 ca chiều: hạn nộp 17:00 ngày 27/04/2027.",https://lab-ai20k.example/threads/3A-LAB-C302/C302-01
+H209-01,3A-LAB-H209,LAB 10,2027-04-27,chiều,official,"Đặt tên repo Lab 10 theo mẫu K5-Lab10-L3A-TenNhom.",https://lab-ai20k.example/threads/3A-LAB-H209/H209-01#dat-ten
+H202-01,3A-LAB-H202,LAB 10,2027-04-27,sáng,official,"Thông báo dành riêng cho Lab 10 ca sáng: hạn nộp 13:00 ngày 27/04/2027.",https://lab-ai20k.example/threads/3A-LAB-H202/H202-01
+E403-01,3A-LAB-E403,LAB 10,2027-04-27,chiều,official,"Hạn nộp Lab 10 ca chiều: 17:00 ngày 27/04/2027.",https://lab-ai20k.example/threads/3A-LAB-E403/E403-01
+E403-02,3A-LAB-E403,LAB 10,2027-04-27,chiều,official,"Lab 10 ca chiều nộp trước 19:00 ngày 27/04/2027.",https://lab-ai20k.example/threads/3A-LAB-E403/E403-02
+F307-01,3A-LAB-F307,LAB 10,2027-04-27,chiều,official,"Hướng dẫn Lab 10: mở mục Tài liệu thực hành ở đầu thread F307.",https://lab-ai20k.example/threads/3A-LAB-F307/F307-01
