@@ -1,47 +1,31 @@
-# Data card — dữ liệu bản chạy thử
+# Data card — dữ liệu bản chạy thử dùng
 
-## Dataset 1 · Hỏi đáp và thông báo
+> Điền ở guide bước 2.4 (bản đầu ở CP2, đủ ở CP3). Ôn lại: ngày 6 · lab ngày 6. Chấm ở rubric R4.
+> Một trang. Mỗi dataset một mục. Dữ liệu chạy thử (bài mẫu, thông báo mẫu, đoạn transcript…) để trong thư mục `data/` này.
+> Không commit nguyên tài liệu khoá, dữ liệu cá nhân thật hay nguyên file data BTC cấp — chỉ đoạn trích ngắn, bản viết lại, hoặc số đã tổng hợp.
 
-| Trường | Nội dung |
-| --- | --- |
-| File | [demo_faq.json](demo_faq.json) |
-| Mục đích | Tra câu hỏi về hạn nộp, tên repo, nơi xem hướng dẫn và kênh hỗ trợ. |
-| Nguồn | Hai mục diễn giải từ [README của BTC](https://github.com/VinUni-AI20k/K5-L3-Day15-AI-Product-Hackathon/blob/main/README.md#checkpoint). Ba thông báo còn lại do nhóm dựng cho LAB-DEMO-01. |
-| Xử lý | Mỗi mục có mã nguồn, chủ đề, buổi áp dụng, nội dung và cờ `synthetic`. Mục chính thức có link. Thông báo giả lập dẫn về mã mục trong file. |
-| Số dòng và phiên bản | 5 mục, bản CP2 ngày 27/11/2026. |
-| Nhãn | 2 mục nguồn thật, 3 mục `synthetic`. Mục giả lập viết tay, không dùng seed. |
-| Giới hạn | Hạn checkpoint áp dụng riêng cho hackathon. Hạn nộp lab, đường dẫn LMS nội bộ và tên kênh trong kịch bản mẫu là giả lập. |
+## Dataset 1 · Tin nhắn thread lab
 
-## Dataset 2 · Phân công hỗ trợ lab
+| | |
+|---|---|
+| Dùng để làm gì | Dữ liệu cục bộ dự kiến cho `search_lab_thread` và các ca thử nguồn đúng, nguồn khác ca, nguồn mâu thuẫn và nguồn ngoài thread. |
+| Từ đâu | [lab_thread_messages.csv](lab_thread_messages.csv). Tin nhắn do Codex soạn theo các ca benchmark của nhóm. URL `.example` chỉ dùng để mô phỏng. |
+| Xử lý những bước gì | Gán mã tin, thread, bài, ngày và ca. Dùng thread ID do ứng dụng xác định để giới hạn tra cứu. |
+| Số dòng / số đoạn | 6 tin trong 5 thread. |
+| Phiên bản / ngày lấy | Bản CP2, 27/11/2026. |
+| Nhãn | `synthetic` |
+| Giới hạn | Chỉ bao phủ các tình huống CP2. Link và hạn nộp đều là dữ liệu demo. |
 
-| Trường | Nội dung |
-| --- | --- |
-| File | [demo_lab_schedule.json](demo_lab_schedule.json) |
-| Mục đích | Minh họa lịch phân công theo lớp, ngày, ca và phòng. |
-| Nguồn | Nhóm dựng thủ công theo [cấu trúc lịch lab của BTC](https://github.com/VinUni-AI20k/K5-L3-Day15-AI-Product-Hackathon/blob/main/data/training-ops/README.md#các-file). |
-| Xử lý | Dùng mã coach và Day Lead giả. H209 có hai ca với hai người khác nhau. H210 có một ca thiếu coach. |
-| Số dòng và phiên bản | 3 phân công và 1 đầu mối chuyển tiếp, bản CP2 ngày 27/11/2026. |
-| Nhãn | Toàn bộ là `synthetic`, viết tay, không dùng seed. |
-| Giới hạn | Lịch chỉ dùng cho demo. Mã liên hệ không trỏ đến tài khoản thật. |
+## Dataset 2 · Phân công coach mô phỏng
 
-Số liệu khảo sát của học viên nằm ở [tổng hợp bằng chứng](../evidence/summary.md) và phục vụ phân tích vấn đề. Hai file JSON là đầu vào cho prototype.
+| | |
+|---|---|
+| Dùng để làm gì | Dữ liệu cục bộ dự kiến cho `lookup_lab_coach` và ca thử B07–B08. |
+| Từ đâu | [lab_coach_assignments.csv](lab_coach_assignments.csv). LC-01 mô phỏng tình huống phòng chờ xác nhận trong lịch giả lập BTC, sheet `Lịch lab 2604-0805`, L3A LAB 10 chiều 27/04/2027. LC-02 do nhóm tự dựng cho C204. |
+| Xử lý những bước gì | Chuẩn hóa ngày, lớp, bài lab và ca. Giữ trống phòng và coach của LC-01 vì lịch thiếu phân công theo phòng. Gán nhãn giả cho coach của LC-02. |
+| Số dòng / số đoạn | 2 bản ghi. |
+| Phiên bản / ngày lấy | Bản CP2, 27/11/2026. |
+| Nhãn | `synthetic` |
+| Giới hạn | Chỉ có một ca đã xác nhận theo phòng và một ca chưa xác minh. |
 
-## Dataset 3 · Tin nhắn trong thread lab cho bản mock CP2
-
-| Trường | Nội dung |
-| --- | --- |
-| File | [lab_thread_messages.csv](lab_thread_messages.csv) |
-| Mục đích | Tra đoạn trả lời theo đúng thread, bài, ngày và ca. |
-| Nguồn và xử lý | 6 tin nhắn viết tay. Mỗi dòng có mã tin, mã thread, mã bài, ngày, ca, loại nguồn và link minh họa. |
-| Nhãn và giới hạn | `synthetic`. Tên phòng lấy từ bối cảnh lab. Nội dung, giờ nộp và link đuôi `.example` là dữ liệu mô phỏng. |
-
-## Dataset 4 · Phân công theo phòng cho bản mock CP2
-
-| Trường | Nội dung |
-| --- | --- |
-| File | [lab_coach_assignments.csv](lab_coach_assignments.csv) |
-| Mục đích | Chỉ gợi ý coach khi lịch xác nhận phòng và phân công theo đúng lớp, ngày và ca. |
-| Nguồn và xử lý | 2 dòng viết tay theo cấu trúc lịch giả lập của BTC. Một dòng chưa chốt phòng, một dòng xác nhận coach mẫu. |
-| Nhãn và giới hạn | `synthetic`. Tên coach và phân công chỉ dùng chạy thử. |
-
-Bản mock CP2 sử dụng hai file CSV trên. Hai file JSON ở Dataset 1 và 2 ghi các ví dụ minh họa của nhóm.
+Codex soạn từng dòng theo kịch bản có sẵn và đối chiếu 8/8 bản ghi với benchmark. Bộ mẫu được viết cố định nên không dùng seed. Cả hai bộ dùng để kiểm hành vi của demo. Bằng chứng pain và nguồn câu thử thật được thu riêng.

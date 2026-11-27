@@ -148,7 +148,8 @@ def answer(text: str, *, clarification: dict | None = None) -> dict:
     if len(active) > 1:
         choices = "\n".join(f'- {source["text"]} · {source["source_url"]}' for source in active)
         return _result("draft_handoff",
-                       f"Hai nguồn còn mâu thuẫn, chưa xác định được thông báo thay thế.\n{choices}",
+                       f"Các nguồn còn mâu thuẫn, chưa xác định được thông báo thay thế.\n{choices}"
+                       "\nBạn có thể hỏi lại ngay trong thread này để xác nhận.",
                        citations=active)
 
     reason = ("Nguồn tìm được đã cũ hoặc thuộc ngày/ca khác. Chưa xác minh được thông tin của ca đang hỏi."
