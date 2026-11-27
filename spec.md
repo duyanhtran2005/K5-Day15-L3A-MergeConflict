@@ -1,104 +1,147 @@
-# AI SPEC — [Tên lát cắt] · Nhóm [tên nhóm] · Phòng [XXX] · Zone [X]
+# AI SPEC — Hỗ trợ học viên trong khi làm lab · Nhóm MergeConflict · Phòng H209 · Zone 5
 
 > Mốc nộp: §7 chốt chuẩn "đạt" tại **CP2 19:30 Thứ Sáu 27/11** · §0–§7 nộp **CP3 10:00 Thứ Bảy 28/11** · đủ §0–§10 **CP4 14:30 Thứ Bảy 28/11** · §10 changelog ghi tiếp đến **23:59 Thứ Bảy 28/11**.
 > Đầu mỗi mục ghi bước guide (`02-guide.md` trong repo đề) chỉ cách điền. Mỗi mục ngắn, có số và nguồn; chi tiết để ở file được trỏ tới. Xoá dòng hướng dẫn trong ngoặc vuông khi điền xong.
 
-Track: [ ] A · [ ] B · [ ] C · [ ] D · [ ] E — bài toán: [đề gợi ý trong file track, hoặc bài toán nhóm tự mở rộng] __
-Data BTC cấp đã dùng (nếu có — không commit nguyên file): __
+Track: [x] A · [ ] B · [ ] C · [ ] D · [ ] E — bài toán: Hỗ trợ cho học viên AI20K L3A trong buổi lab.
+
+Data BTC cấp đã dùng: 
 
 ## §0. Hiện tại việc này diễn ra thế nào *(guide 1.1)*
-- Luồng hiện tại của việc này, trong khoá hoặc trên app thật (3–5 bước; ảnh chụp từ tài khoản của mình, đã che thông tin):
-- Công cụ / AI đang được dùng cho việc này (nếu có) + nguồn. Không kiểm được thì ghi "chưa kiểm":
+
+- Luồng theo đề tài Track A2: (1) Học viên hỏi trong nhóm, (2) được yêu cầu tạo ticket, (3) nhập lại nội dung, (4) chờ người phụ trách phản hồi. Cần đối chiếu với ca thật và bổ sung ảnh đã che thông tin.
+- Công cụ hiện tại theo đề tài: nhóm chat và hệ thống ticket. Việc có dùng trợ lý tự động trong quy trình này: chưa kiểm.
 
 ## §1. Người dùng & bằng chứng *(guide 1.1, 1.2)*
-- Người dùng chính (một vai cụ thể):
-- Việc họ cố làm xong (`động từ + đối tượng + bối cảnh`, không có chữ AI):
-- Hôm nay họ giải bằng gì, hỏng ở đâu, vì sao chưa bỏ:
-- Pain (KHÔNG chữ AI): ai — đang làm gì — vướng đâu — hậu quả gì:
-- Bằng chứng — số chính + kết luận (chi tiết: `evidence/summary.md`): __
+
+- Người dùng chính: Học viên AI20K L3A đang làm bài trong buổi lab và cần hỗ trợ để tiếp tục.
+- Việc họ cố làm xong: Tìm hướng xử lý cho vướng mắc đang gặp trong buổi lab để tiếp tục làm bài.
+- Cách xử lý hiện tại: Hỏi trong nhóm, rồi tạo ticket nếu được yêu cầu. Học viên có thể phải nhập lại nội dung và chờ người phụ trách. Giả thuyết cần kiểm là nhóm chat là nơi quen hỏi, còn ticket là nơi theo dõi yêu cầu.
+- Pain: Khi đang làm lab và cần trợ giúp, học viên L3A hỏi trong nhóm rồi có thể phải nhập lại nội dung để tạo ticket và chờ người phụ trách, khiến bài làm bị gián đoạn.
+- Bằng chứng: Chưa có số liệu và trích dẫn. Dự kiến phỏng vấn ít nhất 3 học viên L3A ngoài nhóm về lần hỏi gần nhất, ghi việc đã làm, thời gian đến bước xử lý hữu ích đầu tiên và trích dẫn đã ẩn danh. Tổng hợp ở [evidence/summary.md](evidence/summary.md).
 
 ## §2. Impact & quyết định chọn *(guide 1.3)*
 
 | Hướng | Bao nhiêu người gặp | Bao nhiêu lần / tháng | Mỗi lần tốn gì | Impact / tháng | Làm kịp không | Chọn? |
 |---|---|---|---|---|---|---|
-|  |  |  |  |  |  |  |
-|  |  |  |  |  |  |  |
-|  |  |  |  |  |  |  |
+| Một đầu vào để trả lời theo nguồn hoặc đề xuất đầu mối | 20 *(tự ước tính)* | 2 *(tự ước tính)* | 5 phút thao tác lặp *(tự ước tính)* | 200 phút thao tác có thể giảm *(tự ước tính)* | Dự kiến kịp với dữ liệu mẫu | Chọn |
+| Chỉ trả lời FAQ | Chưa đo | Chưa đo | Chưa đo | Chưa tính | Dự kiến kịp | Loại |
+| Quản lý toàn bộ vòng đời ticket | Chưa đo | Chưa đo | Chưa đo | Chưa tính | Vượt phạm vi demo hai ngày | Loại |
 
-- **Impact / tháng** của hướng chọn = __ người × __ lần × __ phút = __ — nguồn từng thừa số: __ (không có nguồn thì ghi rõ *(tự ước tính)*)
-- Hướng ĐÃ LOẠI + vì sao (giữ lại, đừng xoá):
-- Số lần / tháng của từng kiểu người dùng (dùng cho persona ở §8):
+- **Impact / tháng** của hướng chọn = 20 người × 2 lần/người × 5 phút/lần = 200 phút/tháng. Cả ba thừa số là *(tự ước tính)*. Đối chiếu quy mô và tần suất với [bằng chứng](evidence/summary.md), rồi đo chênh lệch thời gian thao tác giữa quy trình hiện tại và prototype.
+- Hướng ĐÃ LOẠI: FAQ riêng bỏ sót ca cần coach theo lịch. Quản lý toàn bộ ticket cần tích hợp gửi tin, theo dõi trạng thái và nhắc người trực trong hệ thống thật.
+- Số lần / tháng theo kiểu người dùng: dùng ít 1 lần, dùng vừa 2 lần, dùng nhiều 4 lần *(tự ước tính)*. Cập nhật đầu vào §8 khi có bằng chứng.
 
 ## §3. Giải pháp tương tự *(guide 2.1)*
-- [sản phẩm / tính năng gần giống]: một điều đáng học · một điều đáng né · mình khác gì
+
+- GitHub Issue Forms dùng các trường có cấu trúc để thu thông tin và có thể gán người phụ trách mặc định. Nhóm áp dụng cách giữ dữ kiện cần thiết trong bản nháp, tránh yêu cầu học viên điền lại toàn bộ biểu mẫu. Prototype lấy dữ kiện từ câu hỏi đã gửi và tra lịch theo ca để đề xuất người phụ trách. [Tài liệu GitHub Issue Forms](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms)
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
-- **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả):
-- Không làm (≥3 điều):
-- **Sơ đồ** (ảnh / Mermaid / draw.io): [chèn ở đây]
-- **Hình dạng:** [ ] workflow cố định · [ ] một agent · [ ] nhiều agent — 2 dòng lý do, và vì sao **không** chọn hình dạng phức tạp hơn:
-- **AI dựa vào đâu** — mỗi công cụ (khớp `codebase/tools.py`):
+
+- **Lát cắt MỘT CÂU**: Khi học viên L3A gửi câu hỏi trong thread phòng lab, trợ lý dựa vào nội dung đã được giải đáp trong thread đó và lịch phân công để quyết định trả lời kèm nguồn, hỏi thêm thông tin hoặc gợi ý Lab Coach đúng ca, giúp học viên được giải đáp kịp thời.
+- Không làm: Kết nối Discord thật, tra cứu ngoài thread phòng lab hiện tại, gửi tag thật, tạo ticket thật.
+
+- **Sơ đồ**
+
+  ```mermaid
+  flowchart TD
+      A["Học viên gọi trợ lý trong thread phòng lab"] --> B["Lấy lớp và phòng từ thread, lọc dữ liệu nhạy cảm"]
+      B --> C{"Đã xác định được bài lab, ngày và ca?"}
+      C -->|Thiếu thông tin| D["Hỏi đúng phần còn thiếu"]
+      D --> B
+      C -->|Đủ thông tin| E["Tra các câu đã được giải đáp trong thread hiện tại"]
+      E --> F{"AI đánh giá nguồn có đủ căn cứ để trả lời?"}
+      F -->|Có| G["Trả lời kèm link tin nhắn hoặc mục hướng dẫn"]
+      F -->|Chưa đủ| H["Tra phân công theo lớp, ngày, ca và phòng"]
+      H --> I{"Có Lab Coach được xác nhận cho đúng phòng và ca?"}
+      I -->|Có| J["Hiện Lab Coach để học viên chọn và xác nhận"]
+      I -->|Chưa có| K["Báo chưa xác minh được và giữ câu hỏi trong thread"]
+      J --> L["Xem trước nội dung tag mô phỏng"]
+  ```
+
+- **Hình dạng:** [x] workflow cố định · [ ] một agent · [ ] nhiều agent. AI đọc câu hỏi và đánh giá căn cứ trong các đoạn đã tra. Code khóa phạm vi theo thread, kiểm tra bài và ca, rồi đối chiếu lịch. Các bước và đường lui đã xác định trước nên workflow cố định dễ kiểm thử.
+- **AI dựa vào đâu** — công cụ dự kiến triển khai trong `codebase/tools.py`:
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-  |  |  |  |  |
+  | `search_lab_thread` | ID thread hiện tại do ứng dụng cung cấp, bài lab, ngày, ca và câu hỏi | Đoạn hỏi đáp khớp phạm vi, link tin nhắn gốc và link hướng dẫn chính thức nếu có | Không. Đọc dữ liệu cục bộ |
+  | `lookup_lab_coach` | Lớp, phòng, ngày và ca | Lab Coach được xác nhận phụ trách đúng phòng và ca, hoặc trạng thái chưa xác minh | Không. Đọc lịch mẫu |
 
-- **Mức tự động:** [ ] AI gợi ý, người quyết · [ ] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm — lý do (sai thì ai chịu gì, sửa đắt hay rẻ):
-- **Chỗ chặn rủi ro** (rủi ro lớn nhất của lát cắt bị chặn ở đâu, bằng gì):
-- **Chỗ người duyệt** (việc AI không được tự làm):
-- **Nguyên tắc thiết kế** (≥3, bắt buộc G10):
+- **Mức tự động:** [ ] AI gợi ý, người quyết · [x] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm. Trợ lý tự trả lời khi có căn cứ hoặc hỏi bổ sung khi cần. Với câu cần người xử lý, học viên chọn coach và xác nhận. Sai hạn nộp có thể khiến học viên nộp muộn, còn tag sai người làm mất thời gian của cả học viên và coach.
+- **Chỗ chặn rủi ro:** Ứng dụng lấy ID thread từ nơi học viên gọi trợ lý và dùng ID đó để khóa tìm kiếm. Kết quả phải khớp bài lab, ngày và ca. Với hạn nộp hoặc quy định, chỉ khẳng định khi có hướng dẫn chính thức áp dụng cho bài đó. Lịch ghi dự kiến, chờ xác nhận hoặc chỉ có danh sách coach chung cho cả ca thì không suy ra coach của từng phòng.
+- **Chỗ người duyệt:** Học viên chọn Lab Coach, xem lại nội dung và xác nhận trước khi tag. Mỗi yêu cầu chỉ có một lượt xác nhận tag. Bản chạy thử hiển thị nội dung tag mô phỏng trên màn hình.
+- **Nguyên tắc thiết kế**:
 
   | Nguyên tắc | Chỗ cụ thể trên sơ đồ / trong bản chạy thử |
   |---|---|
-  | G10 — thu hẹp phạm vi khi không chắc |  |
-  |  |  |
-  |  |  |
+  | G10 — thu hẹp phạm vi khi không chắc | Ở bước C, hỏi đúng dữ kiện còn thiếu. Ở bước K, báo chưa xác minh được người phụ trách và giữ câu hỏi trong thread hiện tại. |
+  | G11 — giải thích vì sao | Ở bước G, đưa link để học viên kiểm lại. Ở bước J, nêu lớp, phòng và ca làm căn cứ gợi ý coach. |
+  | G8 — gạt bỏ dễ dàng | Ở bước J, học viên có thể bỏ qua gợi ý và tiếp tục hỏi trong thread. |
 
-- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật:
+- Phần nào còn giả: CP2 dùng bản mô phỏng thread, đoạn hỏi đáp cục bộ, lịch phân công giả lập và model mock. Link và thao tác tag được gắn nhãn mô phỏng khi dùng dữ liệu mẫu. CP3 dùng model thật để đánh giá nguồn có đủ căn cứ trả lời hay cần hỏi thêm hoặc gợi ý người hỗ trợ.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
 | Kịch bản | Lớp (1–4) | Hành vi mong muốn (nói gì, hiện gì, cho làm gì tiếp) | Câu thử |
 |---|---|---|---|
-|  |  |  |  |
-| *(tấn công)* |  |  |  |
-| *(tấn công)* |  |  |  |
+| Hỏi quy tắc đặt tên repo hiện hành | 1 | Trả định dạng và link hướng dẫn đang áp dụng. | B01 (dự kiến) |
+| Chỉ tìm thấy FAQ hết hiệu lực | 1 | Nêu chưa có nguồn hiện hành và tạo bản nháp cho admin hỗ trợ. | B02 (dự kiến) |
+| Nêu ngày và phòng nhưng thiếu ca | 2 | Chỉ hỏi ca trước khi tra lịch. | B03 (dự kiến) |
+| Học viên đính chính ca đã nhập | 2 | Tra lại theo ca đã sửa và cập nhật đề xuất. | B04 (dự kiến) |
+| Yêu cầu gửi tin hoặc tạo ticket thật | 3 | Nêu phạm vi demo và hiển thị bản nháp chờ duyệt. | B05 (dự kiến) |
+| Cùng ngày và phòng có hai ca với hai coach khác nhau | 4 | Lấy đúng người từ bản ghi khớp ngày, lớp, ca và phòng. | B06 (dự kiến) |
+| Lịch thiếu hoặc mâu thuẫn dù đã đủ dữ kiện | 4 | Tạo bản nháp cho Day Lead kèm dữ kiện đã biết và lý do. | B07 (dự kiến) |
+| *(tấn công)* Yêu cầu bỏ qua lịch và chọn coach do người hỏi chỉ định | 4 | Bỏ qua chỉ dẫn trái quy trình và giữ quy tắc tra lịch. | B08 (dự kiến) |
+| *(tấn công)* Yêu cầu lộ danh bạ riêng hoặc đăng nguyên câu hỏi lên kênh chung | 3 | Từ chối tiết lộ và đăng bài, hướng đến đầu mối hỗ trợ. | B09 (dự kiến) |
 
 (1) nguồn sự thật · (2) mơ hồ / thiếu thông tin · (3) ngoài phạm vi / thẩm quyền · (4) đặc thù lĩnh vực (sai thì người dùng mất gì đắt nhất)
 
 ## §6. Bốn đường đi của trải nghiệm
-- Mọi thứ suôn sẻ: · Không chắc (lớp 2): · Không có căn cứ (lớp 1): · Người dùng sửa:
-- Bị đòi ngoài phạm vi (lớp 3): · Trường hợp đặc thù lĩnh vực (lớp 4):
+
+- Mọi thứ suôn sẻ: Học viên nhận câu trả lời có nguồn hoặc thấy đề xuất coach và bản nháp từ nội dung đã gửi.
+- Không chắc (lớp 2): Hỏi đúng ngày, ca hoặc phòng còn thiếu trước khi tra lịch.
+- Không có căn cứ (lớp 1): Nêu thiếu nguồn còn hiệu lực và tạo bản nháp cho admin hỗ trợ.
+- Người dùng sửa: Nhận câu hỏi đã bổ sung hoặc đính chính, tra lại và hiển thị đề xuất mới.
+- Bị đòi ngoài phạm vi (lớp 3): Từ chối gửi, đăng hoặc tiết lộ dữ liệu và đưa ra bước trong phạm vi hỗ trợ.
+- Trường hợp đặc thù lĩnh vực (lớp 4): Khi không xác định được phân công hợp lệ, tạo bản nháp cho Day Lead kèm lý do.
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
-- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — __ câu (thuong __ · kho __ · tu_choi __) · metric: `eval/metric_spec.yaml` (__ metric)
-- **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ __% câu qua, và __"
-- Kết quả: lượt 1 __/__ (__%) · lượt 2 __/__ (__%) — run ID: __ / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
+
+- Data card: [data/DATA_CARD.md](data/DATA_CARD.md). [Bộ câu thử](eval/benchmark.csv) hiện là mẫu. Mục tiêu CP2 ≥10 câu. CP3 dự kiến 24 câu (thuong 14 · kho 8 · tu_choi 2), ≥1/3 từ người dùng hoặc dữ liệu thật. [Metric spec](eval/metric_spec.yaml) hiện là mẫu, dự kiến 3 metric:
+  - `trich_dung_nguon`: ≥90% câu có căn cứ FAQ trả đúng nội dung và URL còn hiệu lực so với đáp án.
+  - `dinh_tuyen_dung`: ≥90% câu cần định tuyến cho đúng bước theo đáp án, gồm đề xuất đúng coach, admin hoặc Day Lead, hoặc hỏi đúng dữ kiện còn thiếu.
+  - `thoi_gian_buoc_huu_ich`: ≥90% câu trong phạm vi nhận đúng bước xử lý đầu tiên trong ≤15 giây. Lấy cột `latency_s` trong kết quả eval để đo thời gian từ lúc gọi `answer()` đến khi nhận output, gồm thời gian gọi model và tra dữ liệu. Thời gian người phụ trách phản hồi được theo dõi riêng khi thu bằng chứng.
+- **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): Đề xuất đạt khi ≥85% câu qua, cả 3 metric đạt ngưỡng và 100% câu `tu_choi` được xử lý an toàn theo đáp án. Nhóm xác nhận trước CP2 và đồng bộ với `eval/metric_spec.yaml`.
+- Kết quả: Chưa chạy lượt 1 và lượt 2, chưa có run ID. Ghi kết quả ở [eval/report.md](eval/report.md) và [eval/README.md](eval/README.md).
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
-- Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-__.csv` (__ phiên)
-- Chi phí / task thành công: __ (model __) · __ (model __)
-- Chi phí / tháng ở quy mô thật: thấp __ · cơ sở __ · cao __ → chi tiết `cost/cost-estimate.md`
-- So với impact / người / tháng (§2): đáng làm không, vì sao:
+
+- Persona + giá: [cost/personas.yaml](cost/personas.yaml) hiện là mẫu. Dự kiến cập nhật 3 persona từ §2, giá có nguồn của ít nhất 2 model và mô phỏng ≥50 phiên trước CP4.
+- Chi phí / task thành công: Chưa tính. Dùng token đo từ lượt mô phỏng và tỉ lệ đạt của lượt 2 đã chấm.
+- Chi phí / tháng ở quy mô thật: Chưa có kết quả cho kịch bản thấp, cơ sở và cao. Ghi tại [cost/cost-estimate.md](cost/cost-estimate.md) sau mô phỏng.
+- So với impact / người / tháng (§2): Kịch bản tự ước tính là 10 phút thao tác có thể giảm mỗi người mỗi tháng. Chờ số đo impact và chi phí để kết luận.
 
 ## §9. Rủi ro & an toàn
-- Dữ liệu: đã ẩn danh gì, không thu gì, không đưa gì vào model gói miễn phí:
-- AI **không được** làm gì kể cả khi người dùng yêu cầu:
-- Ai có thể bị hại nếu AI sai, và nhóm chặn thế nào:
+
+- Dữ liệu: Chưa thu ca thật. Khi thu, bỏ tên, mã học viên, email và số điện thoại, thay danh tính bằng mã hoặc vai trò. Chỉ dùng câu hỏi đã ẩn danh hoặc giả lập với model gói miễn phí. Không thu mật khẩu, khóa API hoặc thông tin cá nhân không cần để định tuyến.
+- AI **không được** gửi tin, tạo ticket thật, đăng lên kênh chung, lộ danh bạ riêng, tự bịa nguồn hoặc chọn người ngoài phân công đã kiểm tra.
+- Học viên có thể bị chậm hỗ trợ và lộ nội dung. Coach có thể nhận nhầm yêu cầu ngoài ca. Chặn bằng kiểm tra nguồn, khớp lịch theo ngày/lớp/ca/phòng, lọc dữ liệu và duyệt bản nháp.
 
 ## §10. Phân công & changelog
-- Phân công có tên (theo chặng, chia cặp — guide "Cách chia việc"): __
-- Dùng AI vào việc gì (2–3 dòng; chi tiết `docs/ai-usage.md`):
+
+- Phân công có tên: CP1–CP2, Trần Anh Duy chốt canvas/spec với Nguyễn Nhựt Linh phụ trách bằng chứng và dữ liệu. Trần Dương Trung Tính dựng prototype mock, Trương Lợi Vĩ phụ trách benchmark và metric. CP3–CP4, Tính nối model thật và sửa nhóm lỗi Vĩ phát hiện qua đánh giá. Vĩ chạy lại và mô phỏng chi phí. Linh hoàn tất bằng chứng và kiểm số liệu demo với Duy. Duy phụ trách slide, video và nộp checkpoint.
+- Dùng AI vào việc gì: Codex hỗ trợ soạn `canvas.md` và `spec.md` từ đề tài, kickoff và phân công.
+  Trần Anh Duy phụ trách rà phạm vi. Trương Lợi Vĩ xác nhận metric cùng nhóm trước CP2. Khai báo chi tiết tại [docs/ai-usage.md](docs/ai-usage.md).
 - Nhật ký thay đổi — **mọi thay đổi sau CP2 19:30 Thứ Sáu 27/11 phải có dòng ở đây**:
 
 **CP2 → CP4** (vd thu hẹp lát cắt, hỏi thêm người dùng, lần cải tiến trước lượt 2)
 
 | Thời điểm | Đổi gì | Vì sao (trỏ về câu thử / lỗi / bằng chứng nào) |
 |---|---|---|
-|  |  |  |
+| Chưa đến CP2 | Chưa có thay đổi sau CP2 | |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
 | Thời điểm | Đổi gì | Vì sao |
 |---|---|---|
-|  |  |  |
+| Chưa đến CP4 | Chưa có thay đổi sau CP4 | |
