@@ -1,23 +1,27 @@
-# Data card — dữ liệu bản chạy thử dùng
+# Data card — dữ liệu bản chạy thử
 
-> Điền ở guide bước 2.4 (bản đầu ở CP2, đủ ở CP3). Ôn lại: ngày 6 · lab ngày 6. Chấm ở rubric R4.
-> Một trang. Mỗi dataset một mục. Dữ liệu chạy thử (bài mẫu, thông báo mẫu, đoạn transcript…) để trong thư mục `data/` này.
-> Không commit nguyên tài liệu khoá, dữ liệu cá nhân thật hay nguyên file data BTC cấp — chỉ đoạn trích ngắn, bản viết lại, hoặc số đã tổng hợp.
+## Dataset 1 · Hỏi đáp và thông báo
 
-## Dataset 1 · [tên]
+| Trường | Nội dung |
+| --- | --- |
+| File | [demo_faq.json](demo_faq.json) |
+| Mục đích | Tra câu hỏi về hạn nộp, tên repo, nơi xem hướng dẫn và kênh hỗ trợ. |
+| Nguồn | Hai mục diễn giải từ [README của BTC](https://github.com/VinUni-AI20k/K5-L3-Day15-AI-Product-Hackathon/blob/main/README.md#checkpoint). Ba thông báo còn lại do nhóm dựng cho LAB-DEMO-01. |
+| Xử lý | Mỗi mục có mã nguồn, chủ đề, buổi áp dụng, nội dung và cờ `synthetic`. Mục chính thức có link. Thông báo giả lập dẫn về mã mục trong file. |
+| Số dòng và phiên bản | 5 mục, bản CP2 ngày 27/11/2026. |
+| Nhãn | 2 mục nguồn thật, 3 mục `synthetic`. Mục giả lập viết tay, không dùng seed. |
+| Giới hạn | Hạn checkpoint áp dụng riêng cho hackathon. Hạn nộp lab, đường dẫn LMS nội bộ và tên kênh trong kịch bản mẫu là giả lập. |
 
-| | |
-|---|---|
-| Dùng để làm gì | nguồn cho công cụ `…` · bộ câu thử · đào bằng chứng |
-| Từ đâu | data BTC cấp (`…` trong repo đề) · tài liệu khoá (trích / viết lại) · nhóm tự viết · sinh có seed |
-| Xử lý những bước gì | lọc __ · làm sạch __ · ẩn danh __ · chia __ (script: `…`) |
-| Số dòng / số đoạn | __ |
-| Phiên bản / ngày lấy | __ |
-| Nhãn | thật · `synthetic` |
-| Giới hạn | thiếu gì, lệch về phía nào |
+## Dataset 2 · Phân công hỗ trợ lab
 
-**Data `synthetic` (nhóm tự sinh):** ghi cách sinh (prompt / script), seed, người kiểm, số dòng đã kiểm tay. Data tự dựng **không phải bằng chứng pain**.
+| Trường | Nội dung |
+| --- | --- |
+| File | [demo_lab_schedule.json](demo_lab_schedule.json) |
+| Mục đích | Tra người phụ trách theo ngày, ca và phòng, hoặc chuyển Day Lead khi thiếu phân công. |
+| Nguồn | Nhóm dựng thủ công theo [cấu trúc lịch lab của BTC](https://github.com/VinUni-AI20k/K5-L3-Day15-AI-Product-Hackathon/blob/main/data/training-ops/README.md#các-file). |
+| Xử lý | Dùng mã coach và Day Lead giả. H209 có hai ca với hai người khác nhau. H210 có một ca thiếu coach. |
+| Số dòng và phiên bản | 3 phân công và 1 đầu mối chuyển tiếp, bản CP2 ngày 27/11/2026. |
+| Nhãn | Toàn bộ là `synthetic`, viết tay, không dùng seed. |
+| Giới hạn | Lịch chỉ dùng cho demo. Mã liên hệ không trỏ đến tài khoản thật. |
 
-## Dataset 2 · [tên]
-
-…
+Số liệu khảo sát của học viên nằm ở [tổng hợp bằng chứng](../evidence/summary.md) và phục vụ phân tích vấn đề. Hai file JSON là đầu vào cho prototype.

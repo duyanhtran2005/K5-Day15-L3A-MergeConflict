@@ -1,0 +1,39 @@
+{
+  "synthetic": true,
+  "fallback": {
+    "role": "Day Lead",
+    "contact_label": "DEMO-DAY-LEAD"
+  },
+  "assignments": [
+    {
+      "code": "LAB-S01",
+      "date": "2026-11-27",
+      "class": "L3A",
+      "session": "LAB-DEMO-01",
+      "shift": "sáng",
+      "room": "H209",
+      "coach": "DEMO-COACH-A",
+      "status": "assigned"
+    },
+    {
+      "code": "LAB-S02",
+      "date": "2026-11-27",
+      "class": "L3A",
+      "session": "LAB-DEMO-01",
+      "shift": "chiều",
+      "room": "H209",
+      "coach": "DEMO-COACH-B",
+      "status": "assigned"
+    },
+    {
+      "code": "LAB-S03",
+      "date": "2026-11-27",
+      "class": "L3A",
+      "session": "LAB-DEMO-02",
+      "shift": "chiều",
+      "room": "H210",
+      "coach": null,
+      "status": "unassigned"
+    }
+  ]
+}
