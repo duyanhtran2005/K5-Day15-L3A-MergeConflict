@@ -12,6 +12,10 @@ MOCK_LAB_YEAR = 2027
 THREAD_HEADER = re.compile(r"^\[Thread:\s*(3[AB]-LAB-[A-Z]\d{3})\]\s*", re.IGNORECASE)
 ROOM_CODE = re.compile(r"\b([a-z]) (\d{3})\b")
 LAB_CODE = re.compile(r"\blab (?:so )?(?:(demo) )?(\d+)\b")
+LAB_SCOPE = re.compile(r"\b(?:lab|bai thuc hanh|bai nay|de bai)\b")
+DATE_REFERENCE = re.compile(r"(?<!\d)(\d{1,2})/(\d{1,2})(?:/(\d{4}))?(?![\d/])")
+RELATIVE_DATE = re.compile(r"\b(?:hom|sang|chieu|toi|ngay) (qua|nay|mai)\b")
+DETAIL_WORDS = re.compile(r"\b(?:ngay|ca|buoi|sang|chieu|toi|da|em|minh|hoi|la|a|nhe)\b")
 SHIFTS = {"sang": "sáng", "chieu": "chiều", "toi": "tối"}
 
 BRANCH_LABELS = {
@@ -29,25 +33,30 @@ def _normalize(text: str) -> str:
 
 
 def _topic(query: str) -> str | None:
-    if re.search(r"\b(?:khong|chua) (?:the )?(?:truy cap|mo duoc|xem duoc|vao duoc)|"
-                 r"\b(?:truy cap|mo|vao) khong duoc\b|\b(?:loi truy cap|nho lab coach)\b", query):
+    lab_context = LAB_SCOPE.search(query)
+    if re.search(r"\b(?:tai lieu|lms|de bai|file lab|link bai|repo lab|lab coach)\b", query) and re.search(
+        r"\b(?:khong|chua) (?:the )?(?:truy cap|mo duoc|xem duoc|vao duoc)\b|"
+        r"\b(?:truy cap|mo|vao) khong duoc\b|\b(?:loi truy cap|nho lab coach)\b",
+        query,
+    ):
         return "su_co_truy_cap_lab"
-    if re.search(r"\b(?:han|deadline|chot gio nao|chot may gio)\b|"
-                 r"\bnop\b.*\b(?:khi nao|luc nao|may gio|bao gio|toi may gio)\b", query):
+    if re.search(r"\bhan nop(?: bai)?(?: voi| la| luc| khi| may| bao| a| nhe| vay| cua lab|$)\b", query) or (
+        lab_context and re.search(r"\b(?:han nop|deadline|chot gio nao|chot may gio)\b|\bnop\b.*\b(?:khi nao|luc nao|may gio|bao gio)\b", query)
+    ):
         return "han_nop_lab"
-    if re.search(r"\b(?:dat ten|ten (?:repo|repository))\b", query):
+    if re.search(r"\b(?:repo|repository)\b", query) and re.search(r"\b(?:dat ten|ten repo|ten repository)\b", query):
         return "ten_repo_lab"
-    if re.search(r"\b(?:lms|huong dan|tai lieu|de bai|github)\b", query):
+    if lab_context and re.search(r"\b(?:lms|huong dan|tai lieu|de bai|github)\b", query):
         return "huong_dan_lab"
     return None
 
 
 def _session_date(text: str, query: str) -> str | None:
-    explicit = re.search(r"(?<!\d)(\d{1,2})/(\d{1,2})(?:/(\d{4}))?(?![\d/])", text)
+    explicit = DATE_REFERENCE.search(text)
     if explicit:
         day, month, year = explicit.groups()
         return date(int(year) if year else MOCK_LAB_YEAR, int(month), int(day)).isoformat()
-    relative = re.search(r"\b(?:hom|sang|chieu|toi|ngay) (qua|nay|mai)\b", query)
+    relative = RELATIVE_DATE.search(query)
     if relative:
         offset = {"qua": -1, "nay": 0, "mai": 1}[relative[1]]
         return (DEMO_DATE + timedelta(days=offset)).isoformat()
@@ -93,13 +102,25 @@ def _mask_contact(text: str) -> str:
     return re.sub(r"(?i)\b(?:token|mật khẩu|api[ _-]?key)\s*[:=]\s*\S+", "[đã ẩn thông tin nhạy cảm]", text)
 
 
+def _is_detail_reply(question: str, query: str) -> bool:
+    """Chỉ tiếp tục lượt cũ khi phần bổ sung gồm dữ kiện về bài hoặc ca."""
+    if re.fullmatch(r"\d+(?: a)?", query):
+        return True
+    has_detail = DATE_REFERENCE.search(question) or RELATIVE_DATE.search(query) or LAB_CODE.search(query)
+    if not has_detail and not _session_shift(question, query):
+        return False
+    remaining = _normalize(DATE_REFERENCE.sub(" ", question))
+    remaining = LAB_CODE.sub(" ", RELATIVE_DATE.sub(" ", remaining))
+    return not DETAIL_WORDS.sub(" ", remaining).strip()
+
+
 def answer(text: str, *, clarification: dict | None = None) -> dict:
     """Nhận ngữ cảnh thread mô phỏng ở đầu input CLI/eval, tách riêng khỏi lời hỏi."""
     incoming = text.strip()
     header = THREAD_HEADER.match(incoming)
     current_thread = header[1].upper() if header else None
     previous = clarification or {}
-    if current_thread and current_thread != previous.get("thread_id"):
+    if current_thread and previous.get("thread_id") and current_thread != previous["thread_id"]:
         previous = {}
     thread_id = current_thread or previous.get("thread_id")
     question = incoming[header.end():] if header else incoming
@@ -113,11 +134,22 @@ def answer(text: str, *, clarification: dict | None = None) -> dict:
     if room and mentioned_rooms - {room}:
         return _result("refuse", f"Trợ lý chỉ tra trong thread {thread_id} (phòng {room}). Bạn có thể mở thread phòng cần hỏi.")
 
+    topic = _topic(query)
+    supplies_thread = current_thread and not previous.get("thread_id") and not question
+    detail_only = _is_detail_reply(question, query)
+    is_followup = bool(previous) and (supplies_thread or detail_only)
+    if not topic and not is_followup:
+        if LAB_SCOPE.search(query) and (detail_only or re.search(r"\b(?:hoi ve|thac mac|ho tro)\b", query)):
+            return _result("ask_clarification", "Bạn cần hỏi gì về lab: hạn nộp, tên repo, hướng dẫn hay lỗi truy cập?")
+        return _result("refuse", "Mình chỉ hỗ trợ câu hỏi về buổi lab trong thread này.")
+
+    if not is_followup:
+        previous = {}
     context = {
         "thread_id": thread_id,
         "question": previous.get("question") or question,
         "lab_id": _lab_id(query, allow_number=bool(previous)) or previous.get("lab_id"),
-        "topic": _topic(query) or previous.get("topic"),
+        "topic": topic or previous.get("topic"),
         "session_date": previous.get("session_date"),
         "shift": _session_shift(question, query) or previous.get("shift"),
     }
