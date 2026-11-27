@@ -138,8 +138,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 ## §10. Phân công & changelog
 
 - Phân công có tên: CP1–CP2, Trần Anh Duy chốt canvas/spec với Nguyễn Nhựt Linh phụ trách bằng chứng và dữ liệu. Trần Dương Trung Tính dựng prototype mock, Trương Lợi Vĩ phụ trách benchmark và metric. CP3–CP4, Tính nối model thật và sửa nhóm lỗi Vĩ phát hiện qua đánh giá. Vĩ chạy lại và mô phỏng chi phí. Linh hoàn tất bằng chứng và kiểm số liệu demo với Duy. Duy phụ trách slide, video và nộp checkpoint.
-- Dùng AI vào việc gì: Codex hỗ trợ soạn `canvas.md` và `spec.md` từ đề tài, kickoff và phân công.
-  Trần Anh Duy phụ trách rà phạm vi. Trương Lợi Vĩ xác nhận metric cùng nhóm trước CP2. Khai báo chi tiết tại [docs/ai-usage.md](docs/ai-usage.md).
+- Dùng AI vào việc gì: [Khai báo dùng AI](docs/ai-usage.md). Trần Anh Duy phụ trách rà phạm vi. Trương Lợi Vĩ xác nhận metric cùng nhóm trước CP2.
 - Nhật ký thay đổi — **mọi thay đổi sau CP2 19:30 Thứ Sáu 27/11 phải có dòng ở đây**:
 
 **CP2 → CP4** (vd thu hẹp lát cắt, hỏi thêm người dùng, lần cải tiến trước lượt 2)
