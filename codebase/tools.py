@@ -1,18 +1,44 @@
-"""Công cụ của bài toán — NHÓM VIẾT. Điền ở guide bước 2.2 (thiết kế) và 3.2 (code).
+"""Công cụ tra cứu chỉ đọc dữ liệu mô phỏng của trợ lý lab L3A."""
+import json
+from pathlib import Path
 
-Mỗi công cụ là một hàm Python có @tool. Docstring ghi đúng 4 ý như sơ đồ ở spec.md §4:
-    tên · input · output · có tác động ra ngoài không (gửi tin, sửa dữ liệu, chấm điểm…)
-Khung tự ghi mỗi lần gọi công cụ vào trace (tên, input, output rút gọn, thời gian, lỗi).
+from tracing import tool
 
-Số công cụ, kiểu công cụ do thiết kế của nhóm quyết định — có bài chỉ cần một công cụ tra cứu.
-Công cụ có tác động ra ngoài: KHÔNG tự làm. Trả về bản nháp chờ người duyệt (guide bước 2.2, "chỗ người duyệt").
-Dữ liệu công cụ đọc (bài mẫu, thông báo mẫu, lịch…): để trong data/ và mô tả ở data/DATA_CARD.md.
-"""
-from tracing import tool, TOOLS  # noqa: F401  (TOOLS: danh sách công cụ đã đăng ký, dùng khi viết vòng lặp agent)
+MOCK_DATA_PATH = Path(__file__).resolve().parents[1] / "data" / "mock_lab_support.json"
+
+
+def load_mock_data() -> dict:
+    return json.loads(MOCK_DATA_PATH.read_text(encoding="utf-8"))
 
 
 @tool
-def search_example(query: str) -> list:
-    """(ví dụ — thay bằng công cụ của nhóm) Tra dữ liệu mẫu theo câu hỏi.
-    Input: câu hỏi (str). Output: danh sách đoạn {"code", "text"}. Không tác động ra ngoài."""
-    return [{"code": "VD-1", "text": "(ví dụ) đoạn dữ liệu giả — thay bằng dữ liệu thật của bài toán"}]
+def search_lab_announcements(lab_number: int, topic: str) -> dict:
+    """Tra thông báo theo số lab và chủ đề, trả nguồn còn hiệu lực và mã nguồn hết hiệu lực.
+    Không tác động ra ngoài.
+    """
+    data = load_mock_data()
+    today = data["demo_date"]
+    active = []
+    inactive = []
+    for announcement in data["announcements"]:
+        if announcement["lab_number"] != lab_number or announcement["topic"] != topic:
+            continue
+        if announcement["effective_from"] <= today <= announcement["effective_through"]:
+            active.append({**announcement, "url": MOCK_DATA_PATH.as_uri()})
+        elif announcement["effective_through"] < today:
+            inactive.append(announcement["code"])
+    return {"active": active, "expired_codes": inactive}
+
+
+@tool
+def lookup_lab_sessions(lab_number: int | None, session_date: str | None, shift: str | None) -> list:
+    """Tra lịch theo số lab, ngày ISO và buổi, trả các ca phù hợp cùng phân công.
+    Không tác động ra ngoài.
+    """
+    return [
+        session
+        for session in load_mock_data()["sessions"]
+        if (lab_number is None or session["lab_number"] == lab_number)
+        and (session_date is None or session["date"] == session_date)
+        and (shift is None or session["shift"] == shift)
+    ]

@@ -33,28 +33,41 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): __
 - [sản phẩm / tính năng gần giống]: một điều đáng học · một điều đáng né · mình khác gì
 
 ## §4. Thiết kế *(guide 2.2, 3.2)*
-- **Lát cắt MỘT CÂU** (1 người dùng · 1 việc · 1 quyết định AI · 1 kết quả):
-- Không làm (≥3 điều):
-- **Sơ đồ** (ảnh / Mermaid / draw.io): [chèn ở đây]
-- **Hình dạng:** [ ] workflow cố định · [ ] một agent · [ ] nhiều agent — 2 dòng lý do, và vì sao **không** chọn hình dạng phức tạp hơn:
-- **AI dựa vào đâu** — mỗi công cụ (khớp `codebase/tools.py`):
+- **Lát cắt MỘT CÂU** — Khi học viên AI20K L3A hỏi về lab, trợ lý tra thông báo và lịch phân công để trả lời kèm nguồn, hỏi đúng dữ kiện còn thiếu hoặc chuẩn bị câu hỏi để điều phối viên duyệt.
+- **Ngoài phạm vi** — Gửi tin cho coach, cấp quyền tài liệu và thay đổi thông báo hoặc lịch phân công.
+- **Sơ đồ**
+
+  ```mermaid
+  flowchart TD
+      A["Học viên hỏi về lab"] --> B{"Đủ dữ kiện để tra?"}
+      B -->|Thiếu| C["Nhánh 2 · Hỏi thêm"]
+      C -->|Học viên bổ sung| B
+      B -->|Đủ| D{"Có thông báo còn hiệu lực giải quyết được?"}
+      D -->|Có| E["Nhánh 1 · Trả lời kèm nguồn"]
+      D -->|Chưa| F{"Lịch xác nhận đúng ca và người phụ trách?"}
+      F -->|Có| G["Nhánh 3 · Chuẩn bị bản nháp chờ duyệt"]
+      F -->|Chưa| H["Nhánh 3 · Báo phần chưa xác minh"]
+  ```
+
+- **Hình dạng** — Workflow cố định. Ba quyết định dựa trên thông tin trong câu hỏi, thời hạn hiệu lực của thông báo và phân công theo ca. Quy tắc cho kết quả lặp lại được khi demo.
+- **Công cụ**
 
   | Công cụ | Input | Output | Tác động ra ngoài? |
   |---|---|---|---|
-  |  |  |  |  |
+  | `search_lab_announcements` | Số lab và chủ đề | Thông báo còn hiệu lực có link nguồn mẫu, mã thông báo đã hết hiệu lực | Chỉ đọc dữ liệu mẫu |
+  | `lookup_lab_sessions` | Số lab, ngày và buổi đã xác định | Các ca phù hợp và phân công đã ghi trong lịch mẫu | Chỉ đọc dữ liệu mẫu |
 
-- **Mức tự động:** [ ] AI gợi ý, người quyết · [ ] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm — lý do (sai thì ai chịu gì, sửa đắt hay rẻ):
-- **Chỗ chặn rủi ro** (rủi ro lớn nhất của lát cắt bị chặn ở đâu, bằng gì):
-- **Chỗ người duyệt** (việc AI không được tự làm):
-- **Nguyên tắc thiết kế** (≥3, bắt buộc G10):
+- **Mức tự động** — Trợ lý trả lời khi có nguồn phù hợp và hỏi thêm khi có thể bổ sung dữ kiện. Điều phối viên chịu trách nhiệm duyệt nội dung trước khi chuyển câu hỏi.
+- **Chỗ chặn rủi ro** — Tạo bản nháp có người nhận khi lịch xác nhận phân công đúng chủ đề, ngày và ca.
+- **Nguyên tắc thiết kế**
 
-  | Nguyên tắc | Chỗ cụ thể trên sơ đồ / trong bản chạy thử |
+  | Nguyên tắc | Chỗ cụ thể trong bản chạy thử |
   |---|---|
-  | G10 — thu hẹp phạm vi khi không chắc |  |
-  |  |  |
-  |  |  |
+  | G10 — thu hẹp phạm vi khi không chắc | Hỏi số lab hoặc thông tin ngày và ca cần tra. |
+  | Căn cứ kiểm tra được | Mỗi câu trả lời có mã nguồn mẫu, ngày hiệu lực và link đến dữ liệu. |
+  | Người duyệt quyết định việc chuyển câu hỏi | Bản nháp hiển thị câu hỏi, ca lab và người phụ trách với trạng thái chờ duyệt. |
 
-- Phần nào còn giả (công cụ trả dữ liệu giả, model chế độ giả…) — ghi rõ, không giả làm thật:
+- **Phần mô phỏng** — Dữ liệu thông báo và lịch là dữ liệu tổng hợp, lấy 27/11/2026 làm mốc demo. Bản mock chọn nhánh bằng quy tắc và ghi lý do trong kết quả cùng trace.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 

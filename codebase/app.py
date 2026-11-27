@@ -36,6 +36,7 @@ def main() -> int:
         return 1
     print("Bản chạy thử — gõ đầu vào rồi Enter. Thoát: Ctrl+C (hoặc Enter 2 lần với dòng trống).")
     blank = 0
+    clarification = None
     while True:
         try:
             text = input("> ").strip()
@@ -50,7 +51,7 @@ def main() -> int:
         blank = 0
         tracing.begin("app")
         try:
-            result = answer(text)
+            result = answer(text, clarification=clarification)
         except NotImplementedError as e:
             tracing.end()
             print("Chưa nối model: %s" % e)
@@ -60,7 +61,8 @@ def main() -> int:
             print("[lỗi] %s: %s" % (type(e).__name__, e))
             continue
         s, _ = tracing.end()
-        print(result.get("output", "") if isinstance(result, dict) else result)
+        clarification = result.get("clarification")
+        print(result["output"])
         print("   (model: %s · gọi model %d lần · công cụ %d lần · token vào %d / ra %d)"
               % (", ".join(s["models"]) or "—", s["model_calls"], s["tool_calls"], s["tokens_in"], s["tokens_out"]))
 

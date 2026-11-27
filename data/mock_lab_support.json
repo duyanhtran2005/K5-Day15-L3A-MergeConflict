@@ -1,0 +1,61 @@
+{
+  "synthetic": true,
+  "demo_date": "2026-11-27",
+  "announcements": [
+    {
+      "code": "MOCK-LAB10-HAN-NOP",
+      "lab_number": 10,
+      "topic": "deadline",
+      "effective_from": "2026-11-25",
+      "effective_through": "2026-11-27",
+      "answer": "Hạn nộp Lab 10 là 17:00 ngày 27/11/2026 (giờ Việt Nam)."
+    },
+    {
+      "code": "MOCK-LAB10-TEN-REPO",
+      "lab_number": 10,
+      "topic": "repo_naming",
+      "effective_from": "2026-11-25",
+      "effective_through": "2026-11-27",
+      "answer": "Repo Lab 10 đặt theo mẫu K5-Lab10-L3A-<TenNhom>, với tên nhóm viết liền, không dấu."
+    },
+    {
+      "code": "MOCK-LAB10-TAI-LIEU",
+      "lab_number": 10,
+      "topic": "portal",
+      "effective_from": "2026-11-25",
+      "effective_through": "2026-11-27",
+      "answer": "Tài liệu Lab 10 nằm trong mục Lab 10 trên LMS của lớp L3A."
+    },
+    {
+      "code": "MOCK-LAB09-HAN-NOP-CU",
+      "lab_number": 9,
+      "topic": "deadline",
+      "effective_from": "2026-11-20",
+      "effective_through": "2026-11-26",
+      "answer": "Hạn nộp Lab 9 là 17:00 ngày 26/11/2026 (giờ Việt Nam)."
+    }
+  ],
+  "sessions": [
+    {
+      "code": "MOCK-LICH-LAB10-CHIEU",
+      "lab_number": 10,
+      "date": "2026-11-27",
+      "shift": "chiều",
+      "hours": "14:00–17:00",
+      "assignments": {
+        "access": {
+          "confirmed": true,
+          "assignee": "Coach hỗ trợ truy cập tài liệu L3A (mẫu)"
+        }
+      }
+    },
+    {
+      "code": "MOCK-LICH-LAB10-SANG",
+      "lab_number": 10,
+      "date": "2026-11-27",
+      "shift": "sáng",
+      "hours": "09:00–12:00",
+      "assignments": {}
+    }
+  ]
+}

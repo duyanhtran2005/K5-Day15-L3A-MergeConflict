@@ -68,7 +68,19 @@ Gõ `dir` (Windows) hoặc `ls` (macOS / Linux): thấy `run.py` và `README.md`
 
 - Windows: gõ `python` mà mở Microsoft Store hoặc báo không có lệnh → dùng `py`. Chưa có Python: cài từ python.org, **tick "Add python.exe to PATH"**, mở lại PowerShell.
 - macOS: báo `command not found: python` là bình thường → dùng `python3`.
-- `python run.py` in ra "[câu trả lời giả — chưa nối model] …" là khung chạy đúng. Nối model thật: [docs/connect-model.md](docs/connect-model.md).
+- `python run.py` mở bản mock dòng lệnh và in tên nhánh cùng lý do chọn sau mỗi lượt hỏi. Mốc ngày của dữ liệu mẫu là **27/11/2026**.
+
+### Thử ba nhánh hỗ trợ lab
+
+| Nhập vào `python run.py` | Kết quả mẫu |
+|---|---|
+| Lab 10 hạn nộp lúc nào? | Nhánh 1. Trả hạn nộp và link đến thông báo mẫu. |
+| Cho em xin hạn nộp lab với. | Nhánh 2. Hỏi số lab. Gõ tiếp “Lab 10” để tra hạn nộp. |
+| Em xem hướng dẫn rồi nhưng vẫn không truy cập được tài liệu Lab 10 chiều nay. | Nhánh 3. Hiện bản nháp có câu hỏi, ca lab và coach mẫu để điều phối viên duyệt. |
+
+“Cho mình hỏi đặt tên repo như thế nào?” cũng hỏi số lab. “Lab chiều nay xem trên LMS hay GitHub?” tra thông báo của ca chiều. Đổi “chiều nay” thành “sáng nay” trong câu sự cố truy cập để xem trường hợp lịch chưa xác nhận người phụ trách.
+
+Mọi thông báo và phân công trong bản mock đều là [dữ liệu tổng hợp](data/mock_lab_support.json). Luồng chạy bằng quy tắc và thư viện chuẩn Python. Tài liệu cho bước tích hợp model của nhóm có ở [docs/connect-model.md](docs/connect-model.md).
 
 Trong README này lệnh viết là `python …`; máy nhóm cần `python3` hay `py` thì gõ thay.
 
