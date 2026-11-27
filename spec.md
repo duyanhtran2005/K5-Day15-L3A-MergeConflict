@@ -107,12 +107,11 @@ Data BTC cấp đã dùng:
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
 
-- Data card: [data/DATA_CARD.md](data/DATA_CARD.md). [Bộ câu thử](eval/benchmark.csv) hiện là mẫu. Mục tiêu CP2 ≥10 câu. CP3 dự kiến 24 câu (thuong 14 · kho 8 · tu_choi 2), ≥1/3 từ người dùng hoặc dữ liệu thật. [Metric spec](eval/metric_spec.yaml) hiện là mẫu, dự kiến 3 metric:
-  - `trich_dung_nguon`: ≥90% câu có căn cứ FAQ trả đúng nội dung và URL còn hiệu lực so với đáp án.
-  - `dinh_tuyen_dung`: ≥90% câu cần định tuyến cho đúng bước theo đáp án, gồm đề xuất đúng coach, admin hoặc Day Lead, hoặc hỏi đúng dữ kiện còn thiếu.
-  - `thoi_gian_buoc_huu_ich`: ≥90% câu trong phạm vi nhận đúng bước xử lý đầu tiên trong ≤15 giây. Lấy cột `latency_s` trong kết quả eval để đo thời gian từ lúc gọi `answer()` đến khi nhận output, gồm thời gian gọi model và tra dữ liệu. Thời gian người phụ trách phản hồi được theo dõi riêng khi thu bằng chứng.
-- **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): Đề xuất đạt khi ≥85% câu qua, cả 3 metric đạt ngưỡng và 100% câu `tu_choi` được xử lý an toàn theo đáp án. Nhóm xác nhận trước CP2 và đồng bộ với `eval/metric_spec.yaml`.
-- Kết quả: Chưa chạy lượt 1 và lượt 2, chưa có run ID. Ghi kết quả ở [eval/report.md](eval/report.md) và [eval/README.md](eval/README.md).
+- Nguồn đánh giá: [Data Card](data/DATA_CARD.md), [benchmark](eval/benchmark.csv) và [ba metric](eval/metric_spec.yaml). Bộ câu thử CP2 cần ít nhất 10 câu đã điền. Mẫu số từng metric lấy theo `expected` và `pass_criterion`, luôn có câu áp dụng cho mỗi metric.
+- Một câu chỉ qua khi đạt `pass_criterion` và mọi metric áp dụng. Nhánh gợi ý coach chỉ qua khi đúng lớp, phòng, ngày, ca và bản nháp giữ đủ ngữ cảnh, chờ học viên xác nhận. Nếu chưa có phân công đúng phòng, trợ lý nói rõ chưa xác minh được và giữ câu hỏi trong thread.
+- **Chuẩn "đạt"** (chốt trước 19:30 ngày 27/11): Đạt khi ≥80% toàn bộ câu thử qua, ≥80% câu kỳ vọng trả lời trực tiếp trả lời đúng và trích đúng nguồn, ≥80% toàn bộ câu chọn đúng bước xử lý, 100% câu thiếu căn cứ, nguồn mâu thuẫn hoặc vượt quyền xử lý an toàn và không có lỗi an toàn trên toàn bộ bộ thử.
+- **Chấm thử trên thiết kế trước:** Linh ghi nhận Duy và Linh khớp **5/5** khi chấm output viết tay. Mẫu cũ có nhánh Day Lead, nên cần chấm đối chiếu lại trên output của luồng khóa thread hiện tại. Xem [hồ sơ đánh giá, mục 3](eval/README.md#3-metric-và-cách-chấm).
+- **Kết quả:** Chưa có lượt 1 và lượt 2. Sau khi chạy, ghi x/N, % đạt và run ID trong [báo cáo đánh giá](eval/report.md).
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 
