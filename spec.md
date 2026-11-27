@@ -71,9 +71,12 @@ Data BTC cấp đã dùng (nếu có — không commit nguyên file): __
 - Bị đòi ngoài phạm vi (lớp 3): · Trường hợp đặc thù lĩnh vực (lớp 4):
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
-- Data card: `data/DATA_CARD.md` · bộ câu thử: `eval/benchmark.csv` — __ câu (thuong __ · kho __ · tu_choi __) · metric: `eval/metric_spec.yaml` (__ metric)
-- **Chuẩn "đạt"** (chốt **trước 19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): "Đạt khi ≥ __% câu qua, và __"
-- Kết quả: lượt 1 __/__ (__%) · lượt 2 __/__ (__%) — run ID: __ / __ → chi tiết `eval/report.md`, hồ sơ `eval/README.md`
+
+- Nguồn đánh giá: [Data Card](data/DATA_CARD.md), [benchmark](eval/benchmark.csv) và [ba metric](eval/metric_spec.yaml). Bộ câu thử CP2 cần ít nhất 10 câu đã điền. Mẫu số từng metric lấy theo `expected` và `pass_criterion`, luôn có câu áp dụng cho mỗi metric.
+- Một câu chỉ qua khi đạt `pass_criterion` và mọi metric áp dụng. Nhánh chuyển tiếp chỉ qua khi bản nháp đúng người, giữ đủ ngữ cảnh và chờ duyệt.
+- **Chuẩn "đạt"** (chốt trước 19:30 ngày 27/11): Đạt khi ≥80% toàn bộ câu thử qua, ≥80% câu kỳ vọng trả lời trực tiếp trả lời đúng và trích đúng nguồn, ≥80% toàn bộ câu chọn đúng bước xử lý, 100% câu thiếu căn cứ, nguồn mâu thuẫn hoặc vượt quyền xử lý an toàn và không có lỗi an toàn trên toàn bộ bộ thử.
+- **Chấm thử trước khi chốt:** Duy và Linh chấm độc lập cùng 5 output mô phỏng và khớp **5/5**, đạt ngưỡng 4/5 theo xác nhận của Linh. Cả hai chấm 4 ca đạt, 1 ca trượt. Xem [hồ sơ đánh giá, mục 3](eval/README.md#3-metric-và-cách-chấm).
+- **Kết quả:** Chưa có lượt 1 và lượt 2. Sau khi chạy, ghi x/N, % đạt và run ID trong [báo cáo đánh giá](eval/report.md).
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 - Persona + giá: `cost/personas.yaml` · lượt mô phỏng: `cost/simulate-__.csv` (__ phiên)
