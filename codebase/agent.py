@@ -19,7 +19,19 @@ DATE_REFERENCE = re.compile(r"(?<!\d)(\d{1,2})/(\d{1,2})(?:/(\d{4}))?(?![\d/])")
 RELATIVE_DATE = re.compile(r"\b(?:hom|sang|chieu|toi|ngay) (qua|nay|mai)\b")
 DETAIL_WORDS = re.compile(r"\b(?:ngay|ca|buoi|sang|chieu|toi|da|em|minh|hoi|la|a|nhe)\b")
 URL_PATTERN = re.compile(r"https?://[^\s)\]>\"']+")
+TIME_REFERENCE = re.compile(
+    r"(?i)(?<![a-z0-9])(\d{1,2})\s*(?::([0-5]\d)|[hg]([0-5]\d)?|giờ(?:\s*([0-5]\d))?)(?:\s*(sáng|chiều|tối))?\b"
+)
+REPO_REFERENCE = re.compile(r"\bK\d+(?:-[A-Za-z0-9_]+)+\b")
+EXACT_DATE_REFERENCE = re.compile(r"(?<!\d)\d{2}/\d{2}/\d{4}(?![\d/])")
 SHIFTS = {"sang": "sáng", "chieu": "chiều", "toi": "tối"}
+VALID_EVAL_ACTIONS = {
+    "answer_with_sources",
+    "conflicting_sources",
+    "insufficient_sources",
+    "ask_clarification",
+    "refuse",
+}
 
 BRANCH_LABELS = {
     "answer_with_sources": "Nhánh 1 — Trả lời kèm nguồn",
@@ -167,17 +179,129 @@ def _extract_json_object(raw: str) -> dict | None:
     return None
 
 
-def _sanitize_urls(text: str, allowed_urls: set[str]) -> str:
-    """Loại bỏ mọi URL không nằm trong nguồn hợp lệ vừa tra từ thread hiện tại."""
-    def _check(match: re.Match) -> str:
-        raw_url = match.group(0)
-        trimmed = raw_url.rstrip(".,;:!?")
-        suffix = raw_url[len(trimmed):]
-        if trimmed in allowed_urls:
-            return raw_url
-        return "[đã loại link ngoài nguồn]" + suffix
+def _extract_urls(text: str) -> set[str]:
+    return {match.group(0).rstrip(".,;:!?") for match in URL_PATTERN.finditer(text or "")}
 
-    return URL_PATTERN.sub(_check, text or "").strip()
+
+def _extract_times(text: str) -> set[str]:
+    times = set()
+    for hour_s, m_colon, m_hg, m_gio, period in TIME_REFERENCE.findall(text or ""):
+        hour = int(hour_s)
+        minute = int(m_colon or m_hg or m_gio or 0)
+        if period and period.casefold() in {"chiều", "tối"} and 1 <= hour <= 11:
+            hour += 12
+        if 0 <= hour <= 23 and 0 <= minute <= 59:
+            times.add(f"{hour:02d}:{minute:02d}")
+    return times
+
+
+def _extract_dates(text: str) -> set[tuple[int, int, int | None]]:
+    return {
+        (int(day), int(month), int(year) if year else None)
+        for day, month, year in DATE_REFERENCE.findall(text or "")
+    }
+
+
+def _extract_repos(text: str) -> set[str]:
+    return set(REPO_REFERENCE.findall(text or ""))
+
+
+def _collect_source_facts(sources_list: list[dict]) -> dict:
+    combined = "\n".join(s.get("text", "") for s in sources_list)
+    return {
+        "urls": {s["source_url"] for s in sources_list if s.get("source_url")},
+        "times": _extract_times(combined),
+        "dates": _extract_dates(combined),
+        "exact_dates": set(EXACT_DATE_REFERENCE.findall(combined)),
+        "repos": _extract_repos(combined),
+    }
+
+
+def _dates_compatible(reply_dates: set[tuple[int, int, int | None]], allowed_dates: set[tuple[int, int, int | None]]) -> bool:
+    for day, month, year in reply_dates:
+        if not any(
+            ad == day and am == month and (year is None or ay is None or year == ay)
+            for ad, am, ay in allowed_dates
+        ):
+            return False
+    return True
+
+
+def _text_matches_sources(
+    text: str,
+    sources_list: list[dict],
+    *,
+    session_date: str | None = None,
+    require_all_times: bool = False,
+    require_exact_official: bool = False,
+    topic: str | None = None,
+) -> bool:
+    """Kiểm tra câu model viết có khớp hoàn toàn mốc giờ, ngày, tên repo và link của nguồn đã tra hay không."""
+    if not text or not sources_list:
+        return False
+    facts = _collect_source_facts(sources_list)
+    reply_urls = _extract_urls(text)
+    if reply_urls - facts["urls"]:
+        return False
+    reply_times = _extract_times(text)
+    if reply_times - facts["times"]:
+        return False
+    if require_all_times and facts["times"] and not (facts["times"] <= reply_times):
+        return False
+    reply_dates = _extract_dates(text)
+    allowed_dates = facts["dates"]
+    if not allowed_dates and session_date:
+        parsed_session = date.fromisoformat(session_date)
+        allowed_dates = {(parsed_session.day, parsed_session.month, parsed_session.year)}
+    if allowed_dates and not _dates_compatible(reply_dates, allowed_dates):
+        return False
+    if not allowed_dates and reply_dates:
+        return False
+    reply_repos = _extract_repos(text)
+    if reply_repos - facts["repos"]:
+        return False
+    if topic == "ten_repo_lab" and facts["repos"] and not (facts["repos"] <= reply_repos):
+        return False
+    if require_exact_official:
+        if topic == "han_nop_lab" and any(t not in text for t in facts["times"]):
+            return False
+        if facts["exact_dates"] and not any(ed in text for ed in facts["exact_dates"]):
+            return False
+    return True
+
+
+def _reason_matches_insufficient(reason: str, session_date: str, active: list[dict]) -> bool:
+    """Chặn model đưa URL, mốc giờ hoặc tên repo chưa kiểm chứng vào lý do thiếu nguồn."""
+    if not reason:
+        return False
+    allowed_urls = {s["source_url"] for s in active if s.get("source_url")}
+    if _extract_urls(reason) - allowed_urls:
+        return False
+    if not active:
+        if _extract_times(reason) or _extract_repos(reason):
+            return False
+        parsed_session = date.fromisoformat(session_date)
+        allowed_dates = {(parsed_session.day, parsed_session.month, parsed_session.year)}
+        if not _dates_compatible(_extract_dates(reason), allowed_dates):
+            return False
+    return True
+
+
+def _is_valid_eval_payload(parsed: object) -> bool:
+    """Kiểm tra chặt chẽ kiểu dữ liệu JSON trả về từ model trước khi xử lý."""
+    if not isinstance(parsed, dict):
+        return False
+    action = parsed.get("action")
+    if not isinstance(action, str) or action not in VALID_EVAL_ACTIONS:
+        return False
+    reply = parsed.get("reply", "")
+    reason = parsed.get("reason", "")
+    cited_codes = parsed.get("cited_codes", [])
+    if not isinstance(reply, str) or not isinstance(reason, str):
+        return False
+    if not isinstance(cited_codes, list) or not all(isinstance(code, str) for code in cited_codes):
+        return False
+    return True
 
 
 def _fallback_eval_decision(sources: dict, thread_id: str) -> dict:
@@ -229,42 +353,44 @@ def _evaluate_sources(context: dict, room: str, sources: dict) -> dict:
     )
     model_resp = call_model(SOURCE_EVAL_SYSTEM, payload)
     raw_text = model_resp.get("text", "")
+    if not isinstance(raw_text, str):
+        note("Phản hồi đánh giá nguồn sai kiểu — dùng quy tắc dự phòng")
+        return _fallback_eval_decision(sources, thread_id)
     if model_resp.get("model") == "fake" or raw_text.startswith("[câu trả lời giả"):
         return _fallback_eval_decision(sources, thread_id)
 
     parsed = _extract_json_object(raw_text)
-    if not parsed or parsed.get("action") not in {
-        "answer_with_sources",
-        "conflicting_sources",
-        "insufficient_sources",
-        "ask_clarification",
-        "refuse",
-    }:
-        note("Phản hồi đánh giá nguồn không hợp lệ — dùng quy tắc dự phòng")
+    if not _is_valid_eval_payload(parsed):
+        note("Phản hồi đánh giá nguồn không hợp lệ hoặc sai kiểu — dùng quy tắc dự phòng")
         return _fallback_eval_decision(sources, thread_id)
     return parsed
 
 
 def _apply_source_decision(context: dict, room: str, sources: dict, evaluated: dict) -> dict:
-    """Thực thi bước xử lý đã chọn với kiểm tra an toàn theo nguồn và lịch phân công."""
+    """Thực thi bước xử lý đã chọn với kiểm tra kiểu dữ liệu, dữ kiện nguồn và lịch phân công."""
     thread_id = context["thread_id"]
+    if not _is_valid_eval_payload(evaluated):
+        note("Kiểu dữ liệu đánh giá nguồn không hợp lệ — dùng quy tắc dự phòng")
+        evaluated = _fallback_eval_decision(sources, thread_id)
+
     lab_id = context["lab_id"]
     session_date = context["session_date"]
     shift = context["shift"]
     active = sources["active"]
     by_code = {s["code"]: s for s in active}
-    allowed_urls = {s["source_url"] for s in active}
 
     action = evaluated.get("action")
     raw_reply = (evaluated.get("reply") or "").strip()
     raw_reason = (evaluated.get("reason") or "").strip()
-    cited_codes = [c for c in (evaluated.get("cited_codes") or []) if isinstance(c, str) and c in by_code]
+    cited_codes = [c for c in (evaluated.get("cited_codes") or []) if c in by_code]
 
     if action == "refuse":
-        return _result("refuse", _sanitize_urls(raw_reply, set()) or "Mình chỉ hỗ trợ câu hỏi về buổi lab trong thread này.")
+        safe_refuse = raw_reply if _reason_matches_insufficient(raw_reply, session_date, active) else ""
+        return _result("refuse", safe_refuse or "Mình chỉ hỗ trợ câu hỏi về buổi lab trong thread này.")
 
     if action == "ask_clarification":
-        return _clarify(context, _sanitize_urls(raw_reply, set()) or "Bạn nói rõ thêm chi tiết để mình kiểm tra lại trong thread nhé.")
+        safe_clarify = raw_reply if _reason_matches_insufficient(raw_reply, session_date, active) else ""
+        return _clarify(context, safe_clarify or "Bạn nói rõ thêm chi tiết để mình kiểm tra lại trong thread nhé.")
 
     if action == "answer_with_sources" and not active:
         action = "insufficient_sources"
@@ -273,10 +399,23 @@ def _apply_source_decision(context: dict, room: str, sources: dict, evaluated: d
 
     if action == "answer_with_sources":
         citations = [by_code[c] for c in cited_codes] or active[:1]
-        citation_urls = {s["source_url"] for s in citations}
-        body = _sanitize_urls(raw_reply, citation_urls) or citations[0]["text"]
+        is_official = context["topic"] in {"han_nop_lab", "ten_repo_lab"}
+        if _text_matches_sources(
+            raw_reply,
+            citations,
+            session_date=session_date,
+            require_all_times=(context["topic"] == "han_nop_lab"),
+            require_exact_official=is_official,
+            topic=context["topic"],
+        ):
+            body = raw_reply
+        else:
+            note("Câu trả lời model lệch dữ kiện nguồn — dùng lại nội dung nguồn đã kiểm tra")
+            body = "\n".join(s["text"] for s in citations)
         footer = "\n".join(
-            f'Nguồn mẫu: {s["code"]} ({s["text"]}) · {s["source_url"]}'
+            f'Nguồn mẫu: {s["code"]} · {s["source_url"]}'
+            if s["text"] in body
+            else f'Nguồn mẫu: {s["code"]} ({s["text"]}) · {s["source_url"]}'
             for s in citations
             if s["source_url"] not in body or s["text"] not in body
         )
@@ -284,7 +423,12 @@ def _apply_source_decision(context: dict, room: str, sources: dict, evaluated: d
         return _result("answer_with_sources", message, citations=citations)
 
     if action == "conflicting_sources" and len(active) >= 2:
-        summary = _sanitize_urls(raw_reason or raw_reply, allowed_urls) or "Các nguồn còn mâu thuẫn, chưa xác định được thông báo thay thế."
+        summary_candidate = raw_reason or raw_reply
+        if _text_matches_sources(summary_candidate, active, session_date=session_date, require_all_times=True, topic=context["topic"]):
+            summary = summary_candidate
+        else:
+            note("Tóm tắt nguồn mâu thuẫn lệch dữ kiện — dùng tóm tắt chuẩn theo nguồn")
+            summary = "Các nguồn còn mâu thuẫn, chưa xác định được thông báo thay thế."
         choices = "\n".join(f'- [{s["code"]}] {s["text"]} · {s["source_url"]}' for s in active)
         return _result(
             "draft_handoff",
@@ -293,7 +437,9 @@ def _apply_source_decision(context: dict, room: str, sources: dict, evaluated: d
         )
 
     stale_note = "Nguồn tìm được đã cũ hoặc thuộc ngày/ca khác. Chưa xác minh được thông tin của ca đang hỏi."
-    reason = _sanitize_urls(raw_reason, set())
+    reason = raw_reason if _reason_matches_insufficient(raw_reason, session_date, active) else ""
+    if not reason and raw_reason:
+        note("Lý do thiếu nguồn chứa dữ kiện chưa kiểm chứng — thay bằng thông báo an toàn")
     if sources["has_stale"]:
         if not reason:
             reason = stale_note

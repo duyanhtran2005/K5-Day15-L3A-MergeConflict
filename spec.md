@@ -152,9 +152,10 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 |---|---|---|
 | 27/11 22:48 | Thêm lớp chặn câu ngoài chủ đề và hai ca B11–B12. | Ngăn câu ngoài chủ đề đi tới bước tra nguồn hoặc gợi ý Lab Coach, kể cả khi có đủ dữ kiện lab. |
 | 27/11 23:48 | Cập nhật hiện trạng, người dùng, mô tả công cụ và phân công CP3–CP4. | Đối chiếu ảnh Discord, khảo sát sơ bộ và bản mock khóa theo thread. |
-| 28/11 00:20 | Bổ sung hai ảnh hiện trạng Discord và đồng bộ khai báo dùng AI. | Gắn nguồn quan sát cho §0 và cập nhật phần khai báo ở §10. |
 | 27/11 | Mở rộng benchmark từ 12 lên 24 câu và lập phân công chấm lượt 1. | B13–B20 bổ sung tình huống từ khảo sát và hướng dẫn lab. [Hồ sơ đánh giá](eval/README.md). |
-| 28/11/2026 00:07 | Nối model thật vào `codebase/ai.py` và bước đánh giá nguồn / chọn bước xử lý ở `codebase/agent.py`; giữ khóa tra theo thread, từ chối ngoài chủ đề và kiểm tra lịch coach theo phòng/ngày/ca | Bước CP3 theo §4; đã chạy thử với `gpt-4o-mini` qua `eval --try` và `B01`–`B12` |
+| 28/11 00:07 | Nối model thật vào `codebase/ai.py` và bước đánh giá nguồn / chọn bước xử lý ở `codebase/agent.py`; giữ khóa tra theo thread, từ chối ngoài chủ đề và kiểm tra lịch coach theo phòng/ngày/ca. | Bước CP3 theo §4; đã chạy thử với `gpt-4o-mini` qua `eval --try` và `B01`–`B12`. |
+| 28/11 00:20 | Bổ sung hai ảnh hiện trạng Discord và đồng bộ khai báo dùng AI. | Gắn nguồn quan sát cho §0 và cập nhật phần khai báo ở §10. |
+| 28/11 01:10 | Kiểm tra kiểu dữ liệu `reply`, `reason`, `cited_codes` và chặn model trả sai dữ kiện hạn nộp/repo/link so với nguồn đã tra trong `codebase/agent.py`. | Sửa lỗi crash `.strip()` khi `reply` dạng số và chặn model trả lệch (vd `23:59` thay vì `17:00`) dù trích đúng nguồn. |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
