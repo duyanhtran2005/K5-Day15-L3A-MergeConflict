@@ -9,7 +9,7 @@
 | | |
 |---|---|
 | Dùng để làm gì | Dữ liệu cục bộ dự kiến cho `search_lab_thread` và các ca thử nguồn đúng, nguồn khác ca, nguồn mâu thuẫn và nguồn ngoài thread. |
-| Từ đâu | [lab_thread_messages.csv](lab_thread_messages.csv). Tin nhắn do Codex soạn theo các ca benchmark của nhóm. URL `.example` chỉ dùng để mô phỏng. |
+| Từ đâu | [lab_thread_messages.csv](lab_thread_messages.csv). Tin nhắn mô phỏng theo các kịch bản trong benchmark của nhóm. URL dùng tên miền `.example`. |
 | Xử lý những bước gì | Gán mã tin, thread, bài, ngày và ca. Dùng thread ID do ứng dụng xác định để giới hạn tra cứu. |
 | Số dòng / số đoạn | 6 tin trong 5 thread. |
 | Phiên bản / ngày lấy | Bản CP2, 27/11/2026. |
@@ -27,5 +27,3 @@
 | Phiên bản / ngày lấy | Bản CP2, 27/11/2026. |
 | Nhãn | `synthetic` |
 | Giới hạn | Chỉ có một ca đã xác nhận theo phòng và một ca chưa xác minh. |
-
-Codex soạn từng dòng theo kịch bản có sẵn và đối chiếu 8/8 bản ghi với benchmark. Bộ mẫu được viết cố định nên không dùng seed. Cả hai bộ dùng để kiểm hành vi của demo. Bằng chứng pain và nguồn câu thử thật được thu riêng.
