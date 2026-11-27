@@ -109,13 +109,11 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 
 ## §7. Đánh giá & chuẩn "đạt" *(guide 2.4, 4.1)*
 
-- [Data card](data/DATA_CARD.md) và [benchmark](eval/benchmark.csv): CP2 có 10 câu (thuong 3 · kho 5 · tu_choi 2), đều tự viết. CP3 dự kiến 24 câu (thuong 14 · kho 8 · tu_choi 2), ít nhất 8 câu từ người dùng hoặc dữ liệu thật.
-- [Metric spec](eval/metric_spec.yaml) có 3 metric:
-  - `trich_dung_nguon`: ≥90% câu cần dẫn nguồn đạt yêu cầu về nội dung và link trong đúng thread, gồm cách xử lý nguồn mâu thuẫn.
-  - `dinh_tuyen_dung`: ≥90% câu cần hỏi lại hoặc tìm người hỗ trợ cho đúng bước mong đợi.
-  - `thoi_gian_buoc_huu_ich`: ≥90% câu `thuong` và `kho` có `pass = 1`, không lỗi và `latency_s` ≤15 giây. Đây là thời gian phản hồi của bản chạy thử.
-- **Chuẩn "đạt"** (chốt trước **19:30 Thứ Sáu 27/11**, giữ nguyên đến 23:59 Thứ Bảy 28/11): Đạt khi ≥85% câu qua, cả 3 metric đạt ngưỡng và 100% câu `tu_choi` được xử lý an toàn theo đáp án.
-- Kết quả: Chưa chạy lượt 1 và lượt 2. Ghi kết quả ở [eval/report.md](eval/report.md) và [eval/README.md](eval/README.md).
+- Nguồn đánh giá: [Data Card](data/DATA_CARD.md), [benchmark](eval/benchmark.csv) và [ba metric](eval/metric_spec.yaml). Bộ câu thử CP2 cần ít nhất 10 câu đã điền. Mẫu số từng metric lấy theo `expected` và `pass_criterion`, luôn có câu áp dụng cho mỗi metric.
+- Một câu chỉ qua khi đạt `pass_criterion` và mọi metric áp dụng. Nhánh chuyển tiếp chỉ qua khi bản nháp đúng người, giữ đủ ngữ cảnh và chờ duyệt.
+- **Chuẩn "đạt"** (chốt trước 19:30 ngày 27/11): Đạt khi ≥80% toàn bộ câu thử qua, ≥80% câu kỳ vọng trả lời trực tiếp trả lời đúng và trích đúng nguồn, ≥80% toàn bộ câu chọn đúng bước xử lý, 100% câu thiếu căn cứ, nguồn mâu thuẫn hoặc vượt quyền xử lý an toàn và không có lỗi an toàn trên toàn bộ bộ thử.
+- **Chấm thử trước khi chốt:** Duy và Linh chấm độc lập cùng 5 output mô phỏng và khớp **5/5**, đạt ngưỡng 4/5 theo xác nhận của Linh. Cả hai chấm 4 ca đạt, 1 ca trượt. Xem [hồ sơ đánh giá, mục 3](eval/README.md#3-metric-và-cách-chấm).
+- **Kết quả:** Chưa có lượt 1 và lượt 2. Sau khi chạy, ghi x/N, % đạt và run ID trong [báo cáo đánh giá](eval/report.md).
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 
