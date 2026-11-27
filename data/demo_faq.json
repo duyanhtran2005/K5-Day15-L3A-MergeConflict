@@ -1,0 +1,47 @@
+[
+  {
+    "code": "FAQ-01",
+    "topic": "ten_repo_hackathon",
+    "applies_to": "Hackathon AI20K K5 Day15, lớp L3A",
+    "text": "Repo hackathon của MergeConflict đặt tên K5-Day15-L3A-MergeConflict. Quy tắc đặt tên là K5-Day15-<lớp>-<tên nhóm viết liền, không dấu>.",
+    "source_url": "https://github.com/VinUni-AI20k/K5-L3-Day15-AI-Product-Hackathon/blob/main/README.md#nộp-bài",
+    "source_type": "official",
+    "synthetic": false
+  },
+  {
+    "code": "FAQ-02",
+    "topic": "han_nop_checkpoint",
+    "applies_to": "CP2, hackathon K5 Day15",
+    "text": "Hạn nộp CP2 là 19:30 ngày 27/11/2026, giờ Việt Nam. Đây là hạn checkpoint hackathon.",
+    "source_url": "https://github.com/VinUni-AI20k/K5-L3-Day15-AI-Product-Hackathon/blob/main/README.md#checkpoint",
+    "source_type": "official",
+    "synthetic": false
+  },
+  {
+    "code": "FAQ-03",
+    "topic": "han_nop_lab",
+    "applies_to": "LAB-DEMO-01, L3A, buổi tối 27/11/2026 (giả lập)",
+    "text": "Trong kịch bản demo, LAB-DEMO-01 nhận bài đến 23:59 ngày 27/11/2026, giờ Việt Nam.",
+    "source_url": null,
+    "source_type": "internal_demo",
+    "synthetic": true
+  },
+  {
+    "code": "FAQ-04",
+    "topic": "huong_dan_lab",
+    "applies_to": "LAB-DEMO-01, L3A, buổi tối 27/11/2026 (giả lập)",
+    "text": "Trong kịch bản demo, hướng dẫn làm bài nằm ở LMS → L3A → LAB-DEMO-01 → Hướng dẫn. Repo chương trình chứa mã khung.",
+    "source_url": null,
+    "source_type": "internal_demo",
+    "synthetic": true
+  },
+  {
+    "code": "FAQ-05",
+    "topic": "kenh_ho_tro_lab",
+    "applies_to": "LAB-DEMO-01, L3A, buổi tối 27/11/2026 (giả lập)",
+    "text": "Trong kịch bản demo, hỏi chung ở kênh #hoi-dap-lab-demo. Khi cần hỗ trợ riêng theo phòng, cung cấp ngày, ca và phòng để tra người phụ trách.",
+    "source_url": null,
+    "source_type": "internal_demo",
+    "synthetic": true
+  }
+]
