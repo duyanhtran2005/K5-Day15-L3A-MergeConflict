@@ -9,10 +9,20 @@ Bản mock đọc [tin nhắn phòng lab](../data/lab_thread_messages.csv) và [
 
 ## 2. Bộ câu thử dựng ra sao
 
-- `eval/benchmark.csv`: __ câu (thuong __ · kho __ · tu_choi __, trong đó __ câu tấn công)
-- Nguồn (`python run.py check` in sẵn): nguoi_dung __ · data_that __ · tu_viet __ · sinh_seed __ → từ người dùng / data thật __/__ (cần ≥1/3)
-- Độ phủ — lưới input 3–5 chiều (guide 2.4 bước 5): __
-- Câu `kho` trỏ về 4 lớp chỗ khó (`spec.md` §5): lớp 1: __ · lớp 2: __ · lớp 3: __ · lớp 4: __
+- [Benchmark](benchmark.csv) có 24 câu, gồm 6 `thuong`, 13 `kho` và 5 `tu_choi`. Hai câu tấn công ở CP2 là B09 và B10.
+- Có 8/24 câu có nguồn người dùng hoặc dữ liệu thật, gồm 3 `nguoi_dung` và 5 `data_that`. 16 câu còn lại thuộc nhóm `tu_viet`.
+- B13–B15 diễn đạt lại ba tình huống S05–S07 từ khảo sát ẩn danh. Thread được thêm làm ngữ cảnh mô phỏng cho câu thử. [Tổng hợp khảo sát](../evidence/summary.md#3-trích-dẫn-và-ví-dụ-nguyên-văn).
+- B16–B20 lấy chi tiết từ hướng dẫn chính thức của khóa. Cột `source` cho biết tình huống đến từ đâu. Đáp án cho ca demo dựa vào nguồn cùng thread và lịch mẫu. [Hướng dẫn Lab 10](https://github.com/VinUni-AI20k/K5_L3_Day10_PoC-to-Pilot_Gate1_student/blob/main/README.md), [hướng dẫn Lab 13](https://github.com/VinUni-AI20k/K5-L34-Day13-Lab/blob/main/README.md).
+
+| Chiều đầu vào | Giá trị đã thử |
+|---|---|
+| Chủ đề | Hạn nộp (B01), đặt tên repo (B02), nơi xem tài liệu (B21), vướng khi làm bài (B15), ngoài phạm vi (B11, B24) |
+| Dữ kiện | Đủ bài và ca (B01), thiếu bài (B13), thiếu ca (B20), ngày không hợp lệ (B22) |
+| Nguồn | Đúng ca (B01), sai ca (B04), mâu thuẫn (B05), thiếu nguồn (B06, B18), quy định khóa thật khác dữ liệu demo (B16–B17) |
+| Phân công | Chưa xác nhận theo phòng (B07), đã xác nhận theo phòng (B08, B19, B23) |
+| Quyền | Yêu cầu tra thread khác (B09), xin thông tin riêng (B10), yêu cầu bỏ qua xác nhận tag (B23) |
+
+Các câu `kho` theo lớp ở [đặc tả](../spec.md) gồm nguồn sự thật (B04–B06, B16–B18), thiếu thông tin (B15, B20, B22), và rủi ro đặc thù khi hỗ trợ lab (B07–B08, B19, B23). Lớp ngoài phạm vi có B09–B12 và B24 trong nhóm `tu_choi`.
 
 ## 3. Metric và cách chấm
 
@@ -42,7 +52,18 @@ Dùng [FAQ](../data/demo_faq.json) và [lịch phân công](../data/demo_lab_sch
 
 ## 4. Lệnh
 
-`python run.py eval` → `eval/run-N.csv` + `traces/run-N.jsonl` · điền cột `pass` · `python run.py score eval/run-N.csv`
+Khi backend đã gọi được model thật, chạy `python run.py eval --try`. Khi lệnh xác nhận có token và cả ba câu thử đều chạy được, chạy `python run.py eval` để tạo `eval/run-1.csv` và `traces/run-1.jsonl`.
+
+Dự kiến chia lượt 1 thành sáu câu mỗi người. Duy và Linh chấm độc lập cùng năm output B01, B13, B19, B23 và B24 để đối chiếu cách hiểu tiêu chí trước khi tổng hợp.
+
+| Người chấm | Mã câu |
+|---|---|
+| Duy | B01, B05, B09, B13, B17, B21 |
+| Linh | B02, B06, B10, B14, B18, B22 |
+| Tính | B03, B07, B11, B15, B19, B23 |
+| Vĩ | B04, B08, B12, B16, B20, B24 |
+
+Đối chiếu `output` với `expected`, `pass_criterion` và metric áp dụng. Xem trace theo mã câu nếu cần kiểm công cụ hoặc phạm vi. Nhóm thống nhất các ca chấm khác nhau rồi điền `pass` bằng `1` (đạt) hoặc `0` (trượt), ghi lý do ở `ghi_chu`. Khi cả 24 câu đã được chấm, chạy `python run.py score eval/run-1.csv`.
 
 ## 5. Đã chạy gì
 
