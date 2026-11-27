@@ -8,26 +8,24 @@
 
 | Lượt | Run ID | Đạt / tổng | % | thuong | kho | tu_choi | So với chuẩn "đạt" |
 |---|---|---|---|---|---|---|---|
-| 1 | | __/__ | | __/__ | __/__ | __/__ | đạt / chưa |
+| 1 | `run-1@20261128-002906` | 22/24 | 92% | 6/6 (100%) | 11/13 (85%) | 5/5 (100%) | Đạt ngưỡng tổng 80%. Cần đối chiếu các điều kiện còn lại ở §7. |
 | 2 | | __/__ | | __/__ | __/__ | __/__ | đạt / chưa |
 
-Kết quả từng câu: `eval/run-1.csv`, `eval/run-2.csv`. Trace: `traces/run-1.jsonl`, `traces/run-2.jsonl`.
+Lượt 1 dùng `openai/gpt-4o-mini` qua OpenRouter và có 0 lỗi thực thi. [Kết quả từng câu](run-1.csv) · [Trace lượt 1](../traces/run-1.jsonl).
 
 ## 2. Lỗi lượt 1 — gom thành nhóm có tên
 
 | Nhóm lỗi | Số câu | Câu |
 |---|---|---|
-| vd: bịa nguồn *(ví dụ)* | | |
-| vd: đoán khi thiếu thông tin *(ví dụ)* | | |
-| | | |
+| Thiếu ghi nhận vướng mắc khi hỏi lại | 1 | B15 |
+| Tra cứu khi chưa rõ ca học | 1 | B20 |
 
-**≥3 lỗi cụ thể:**
+**Hai câu trượt trong lượt 1**
 
 | Câu | Input | Output | Vì sao sai |
 |---|---|---|---|
-| | | | |
-| | | | |
-| | | | |
+| B15 | Học viên bị kẹt khi deploy bài lab lên Railway và nhờ Lab Coach hỗ trợ. | “Bạn đang hỏi bài Lab số mấy hoặc tên bài lab nào?” | Hỏi đúng thông tin còn thiếu nhưng chưa ghi nhận vướng mắc deploy Railway theo tiêu chí. |
+| B20 | Học viên cần hướng dẫn Lab 13 ngày 05/05/2027 và nhắc đến tài liệu dành cho buổi chiều. | Báo chưa có hướng dẫn trong C204 và chưa xác minh được Lab Coach. | Ca chiều được nhắc đến là ca của tài liệu. Hệ thống đã tra nguồn và lịch trước khi hỏi học viên đang học ca nào. |
 
 ## 3. Một lần cải tiến
 

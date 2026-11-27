@@ -69,11 +69,11 @@ Dự kiến chia lượt 1 thành sáu câu mỗi người. Duy và Linh chấm 
 
 | Lượt | Run ID | Model | Cấu hình (prompt / công cụ / thay đổi) | Đạt / tổng | % | Đạt chuẩn? |
 |---|---|---|---|---|---|---|
-| 1 | | | | __/__ | | |
+| 1 | `run-1@20261128-002906` | `openai/gpt-4o-mini` | OpenRouter, đánh giá nguồn trong thread, 24 câu | 22/24 | 92% | Đạt ngưỡng tổng 80%. Cần đối chiếu các điều kiện còn lại ở §7. |
 | 2 | | | | __/__ | | |
 
 Lượt chạy lại vì lỗi kỹ thuật, lượt sau CP4: ghi thêm dòng, không sửa dòng cũ.
 
 ## 6. Lỗi chính
 
-Tóm 2–3 dòng từ `eval/report.md`: nhóm lỗi lớn nhất · đã sửa gì · còn lại gì.
+B15 hỏi đúng bài lab nhưng bỏ qua vướng mắc deploy Railway. B20 đi tra nguồn và lịch trước khi hỏi học viên đang học ca nào. [Chi tiết lượt 1](report.md#2-lỗi-lượt-1--gom-thành-nhóm-có-tên).
