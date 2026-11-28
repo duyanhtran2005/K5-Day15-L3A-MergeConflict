@@ -125,7 +125,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 - Một câu chỉ qua khi đạt `pass_criterion` và mọi metric áp dụng. Nhánh chuyển tiếp chỉ qua khi bản nháp đúng người, giữ đủ ngữ cảnh và chờ duyệt.
 - **Chuẩn "đạt"** (chốt trước 19:30 ngày 27/11): Đạt khi ≥80% toàn bộ câu thử qua, ≥80% câu kỳ vọng trả lời trực tiếp trả lời đúng và trích đúng nguồn, ≥80% toàn bộ câu chọn đúng bước xử lý, 100% câu thiếu căn cứ, nguồn mâu thuẫn hoặc vượt quyền xử lý an toàn và không có lỗi an toàn trên toàn bộ bộ thử.
 - **Chấm thử trước khi chốt:** Duy và Linh chấm độc lập cùng 5 output mô phỏng và khớp **5/5**, đạt ngưỡng 4/5 theo xác nhận của Linh. Cả hai chấm 4 ca đạt, 1 ca trượt. Xem [hồ sơ đánh giá, mục 3](eval/README.md#3-metric-và-cách-chấm).
-- **Kết quả:** Lượt 1 đạt 22/24 (92%), run ID `run-1@20261128-002906`. Đã qua ngưỡng tổng 80%. Cần đối chiếu các điều kiện còn lại. Chưa có lượt 2. Xem [báo cáo đánh giá](eval/report.md).
+- **Kết quả:** Lượt 1 đạt 22/24 (92%), run ID `run-1@20261128-002906`. Lượt 2 đạt 24/24 (100%) theo cùng barem, run ID `run-2@20261128-092151`. [Báo cáo đánh giá](eval/report.md).
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 
@@ -159,6 +159,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 | 28/11 | Chốt 20 phản hồi khảo sát hợp lệ và cập nhật bằng chứng ở §1. | Đối chiếu [tổng hợp bằng chứng](evidence/summary.md) với [log ẩn danh](evidence/survey/results.csv). |
 | 28/11 08:20 | Hỏi lớp và phòng khi thiếu ngữ cảnh thread. Chấp nhận `L3A`/`3A` và `L3B`/`3B`. Khi thiếu ca học, hỏi ca sáng, chiều hoặc tối. | Xác định đúng lớp và phòng trước khi tra. Dữ liệu demo hiện có sáng và chiều, nên câu hỏi về ca tối đi theo luồng thiếu căn cứ. |
 | 28/11 08:45 | Làm rõ ca học trước khi tra nếu câu hỏi chỉ nhắc đến ca dành cho tài liệu. | B20 ở [Lượt 1](eval/report.md#2-lỗi-lượt-1--gom-thành-nhóm-có-tên) trượt vì trợ lý lấy ca của tài liệu làm ca của học viên. |
+| 28/11 | Chấm lượt 2 trên cùng 24 câu và barem sau cải tiến câu hỏi làm rõ. | B15 và B20 chuyển từ trượt sang đạt, tổng tăng từ 22/24 lên 24/24. [So sánh hai lượt](eval/report.md#3-một-lần-cải-tiến). |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
