@@ -20,7 +20,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 - Việc họ cố làm xong: Xác định hạn nộp, cách đặt tên repo hoặc nơi xem hướng dẫn của đúng bài lab để tiếp tục làm và nộp bài. Nếu gặp lỗi khi làm bài, học viên cần biết nên hỏi ai để được hỗ trợ.
 - Cách xử lý hiện tại: Học viên tự tìm trong thông báo và các đoạn trao đổi, đăng câu hỏi trong thread phòng lab, hoặc tạo ticket nếu cần hỗ trợ riêng.
 - Pain: Khi đang làm bài hoặc sắp nộp lab, học viên AI20K có thể phải dò qua Discord, LMS và GitHub để biết hướng dẫn nào đang áp dụng. Nếu các nguồn ghi khác nhau, như quy định đặt tên repo trên LMS và GitHub không khớp, học viên phải hỏi lại rồi chờ xác nhận. Việc làm bài bị gián đoạn và thời gian còn lại trước hạn nộp bị rút ngắn.
-- Bằng chứng sơ bộ: Trong 7 phản hồi khảo sát, 5/7 mất thời gian tìm thông tin hoặc chọn kênh hỏi, 5/7 phải chờ người phụ trách phản hồi và 2/7 xác nhận đã tạo ticket. Một học viên (S05) kể rằng hướng dẫn đặt tên repo trên GitHub và LMS khác nhau sát giờ nộp. Kết quả mô tả 7 phản hồi đã nhận. Mẫu khảo sát hiện chưa đạt ngưỡng bằng chứng CP3. Xem [tổng hợp bằng chứng](evidence/summary.md).
+- Bằng chứng khảo sát hỗ trợ gấp ngoài lớp: Trong 20 phản hồi của học viên L3A ngoài nhóm, 14/20 mất thời gian tìm thông tin hoặc kênh hỏi, 13/20 chờ người phụ trách phản hồi và 15/20 mất ít nhất 15 phút mới có hướng xử lý. S05 kể rằng hướng dẫn đặt tên repo trên GitHub và LMS khác nhau sát giờ nộp. Kết quả ủng hộ việc ưu tiên câu trả lời kèm nguồn và hướng học viên đến đúng người phụ trách. [Tổng hợp bằng chứng](evidence/summary.md).
 
 ## §2. Impact & quyết định chọn *(guide 1.3)*
 
@@ -78,7 +78,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 
 - **Mức tự động:** [ ] AI gợi ý, người quyết · [x] AI tự làm khi chắc, chuyển người khi không · [ ] AI tự làm. Trợ lý tự trả lời khi có căn cứ hoặc hỏi bổ sung khi cần. Với câu cần người xử lý, học viên chọn coach và xác nhận. Sai hạn nộp có thể khiến học viên nộp muộn, còn tag sai người làm mất thời gian của cả học viên và coach.
 - **Chỗ chặn rủi ro:** Kiểm tra phạm vi ở bước S trước khi hỏi bài, ngày và ca. Câu ngoài chủ đề dừng ngay, kể cả khi có đủ ngày, ca và phòng. Khi đang chờ bổ sung, chỉ nối tiếp câu hỏi cũ nếu lượt mới cung cấp dữ kiện về bài hoặc ca. Ứng dụng khóa tra cứu theo ID thread, bài lab, ngày và ca. Nếu hai nguồn cùng hiệu lực mâu thuẫn, nêu cả hai nguồn và đề nghị học viên hỏi lại trong thread. Với hạn nộp hoặc quy định, chỉ dùng hướng dẫn chính thức áp dụng cho bài đó. Lịch dự kiến, chờ xác nhận hoặc chỉ có coach chung cho cả ca không đủ căn cứ để gợi ý coach của từng phòng.
-- **Chỗ người duyệt:** Bản mock hiện hiển thị Lab Coach được gợi ý và nội dung bản nháp để học viên xem trước. Bản nháp có trạng thái chờ xác nhận. Thao tác tag được mô phỏng.
+- **Chỗ người duyệt:** Bản chạy thử hiển thị Lab Coach được gợi ý và nội dung bản nháp để học viên xem trước. Bản nháp có trạng thái chờ xác nhận. Thao tác tag được mô phỏng.
 
 - **Nguyên tắc thiết kế**:
 
@@ -88,7 +88,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
   | G11 — giải thích vì sao | Ở bước G, đưa link để học viên kiểm lại. Ở bước J, nêu lớp, phòng và ca làm căn cứ gợi ý coach. |
   | G8 — gạt bỏ dễ dàng | Ở bước J, học viên có thể bỏ qua gợi ý và tiếp tục hỏi trong thread. |
 
-- Phần nào còn giả: Bản mock minh họa các thread và ca lab L3A bằng tin nhắn cục bộ, link `.example` và lịch phân công giả lập. Thao tác tag được mô phỏng. Kế hoạch CP3 là nối model thật vào bước đánh giá nguồn và chọn cách xử lý.
+- Phần nào còn giả: Bản chạy thử gọi model thật ở bước đánh giá nguồn và chọn cách xử lý. Tin nhắn trong thread, ca lab L3A, link `.example` và lịch phân công vẫn là dữ liệu mẫu cục bộ. Thao tác tag được mô phỏng.
 
 ## §5. Chỗ khó — 4 lớp + ≥6 kịch bản + 2 tấn công *(guide 2.3)*
 
@@ -125,7 +125,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 - Một câu chỉ qua khi đạt `pass_criterion` và mọi metric áp dụng. Nhánh chuyển tiếp chỉ qua khi bản nháp đúng người, giữ đủ ngữ cảnh và chờ duyệt.
 - **Chuẩn "đạt"** (chốt trước 19:30 ngày 27/11): Đạt khi ≥80% toàn bộ câu thử qua, ≥80% câu kỳ vọng trả lời trực tiếp trả lời đúng và trích đúng nguồn, ≥80% toàn bộ câu chọn đúng bước xử lý, 100% câu thiếu căn cứ, nguồn mâu thuẫn hoặc vượt quyền xử lý an toàn và không có lỗi an toàn trên toàn bộ bộ thử.
 - **Chấm thử trước khi chốt:** Duy và Linh chấm độc lập cùng 5 output mô phỏng và khớp **5/5**, đạt ngưỡng 4/5 theo xác nhận của Linh. Cả hai chấm 4 ca đạt, 1 ca trượt. Xem [hồ sơ đánh giá, mục 3](eval/README.md#3-metric-và-cách-chấm).
-- **Kết quả:** Chưa có lượt 1 và lượt 2. Sau khi chạy, ghi x/N, % đạt và run ID trong [báo cáo đánh giá](eval/report.md).
+- **Kết quả:** Lượt 1 đạt 22/24 (92%), run ID `run-1@20261128-002906`. Lượt 2 đạt 24/24 (100%) theo cùng barem, run ID `run-2@20261128-092151`. [Báo cáo đánh giá](eval/report.md).
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 
@@ -136,7 +136,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 
 ## §9. Rủi ro & an toàn
 
-- Dữ liệu: Bằng chứng sơ bộ gồm 7 phản hồi khảo sát. Prototype dùng tin nhắn và lịch giả lập. Khi dùng ví dụ thật, bỏ tên, mã học viên, email và số điện thoại trước khi đưa vào repo công khai hoặc gửi sang model. Không thu mật khẩu, khóa API hoặc thông tin cá nhân không cần để định tuyến.
+- Dữ liệu: Bằng chứng khảo sát gồm 20 phản hồi trong mẫu phân tích. Prototype dùng tin nhắn và lịch giả lập. Khi dùng ví dụ thật, bỏ tên, mã học viên, email và số điện thoại trước khi đưa vào repo công khai hoặc gửi sang model. Không thu mật khẩu, khóa API hoặc thông tin cá nhân không cần để định tuyến. [Log phản hồi ẩn danh](evidence/survey/results.csv).
 - AI **không được** gửi tin, tạo ticket thật, đăng lên kênh chung, lộ danh bạ riêng, tự bịa nguồn hoặc chọn người ngoài phân công đã kiểm tra.
 - Học viên có thể bị chậm hỗ trợ và lộ nội dung. Coach có thể nhận nhầm yêu cầu ngoài ca. Chặn bằng kiểm tra nguồn, khớp lịch theo ngày/lớp/ca/phòng, lọc dữ liệu và duyệt bản nháp.
 
@@ -152,7 +152,14 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 |---|---|---|
 | 27/11 22:48 | Thêm lớp chặn câu ngoài chủ đề và hai ca B11–B12. | Ngăn câu ngoài chủ đề đi tới bước tra nguồn hoặc gợi ý Lab Coach, kể cả khi có đủ dữ kiện lab. |
 | 27/11 23:48 | Cập nhật hiện trạng, người dùng, mô tả công cụ và phân công CP3–CP4. | Đối chiếu ảnh Discord, khảo sát sơ bộ và bản mock khóa theo thread. |
+| 27/11 | Mở rộng benchmark từ 12 lên 24 câu và lập phân công chấm lượt 1. | B13–B20 bổ sung tình huống từ khảo sát và hướng dẫn lab. [Hồ sơ đánh giá](eval/README.md). |
+| 28/11 00:07 | Nối model thật vào `codebase/ai.py` và bước đánh giá nguồn / chọn bước xử lý ở `codebase/agent.py`; giữ khóa tra theo thread, từ chối ngoài chủ đề và kiểm tra lịch coach theo phòng/ngày/ca. | Bước CP3 theo §4; đã chạy thử với `gpt-4o-mini` qua `eval --try` và `B01`–`B12`. |
 | 28/11 00:20 | Bổ sung hai ảnh hiện trạng Discord và đồng bộ khai báo dùng AI. | Gắn nguồn quan sát cho §0 và cập nhật phần khai báo ở §10. |
+| 28/11 01:10 | Kiểm tra kiểu dữ liệu `reply`, `reason`, `cited_codes` và chặn model trả sai dữ kiện hạn nộp/repo/link so với nguồn đã tra trong `codebase/agent.py`. | Sửa lỗi crash `.strip()` khi `reply` dạng số và chặn model trả lệch (vd `23:59` thay vì `17:00`) dù trích đúng nguồn. |
+| 28/11 | Chốt 20 phản hồi khảo sát hợp lệ và cập nhật bằng chứng ở §1. | Đối chiếu [tổng hợp bằng chứng](evidence/summary.md) với [log ẩn danh](evidence/survey/results.csv). |
+| 28/11 08:20 | Hỏi lớp và phòng khi thiếu ngữ cảnh thread. Chấp nhận `L3A`/`3A` và `L3B`/`3B`. Khi thiếu ca học, hỏi ca sáng, chiều hoặc tối. | Xác định đúng lớp và phòng trước khi tra. Dữ liệu demo hiện có sáng và chiều, nên câu hỏi về ca tối đi theo luồng thiếu căn cứ. |
+| 28/11 08:45 | Làm rõ ca học trước khi tra nếu câu hỏi chỉ nhắc đến ca dành cho tài liệu. | B20 ở [Lượt 1](eval/report.md#2-lỗi-lượt-1--gom-thành-nhóm-có-tên) trượt vì trợ lý lấy ca của tài liệu làm ca của học viên. |
+| 28/11 | Chấm lượt 2 trên cùng 24 câu và barem sau cải tiến câu hỏi làm rõ. | B15 và B20 chuyển từ trượt sang đạt, tổng tăng từ 22/24 lên 24/24. [So sánh hai lượt](eval/report.md#3-một-lần-cải-tiến). |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 

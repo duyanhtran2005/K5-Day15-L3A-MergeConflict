@@ -1,0 +1,8 @@
+.env
+.env.local
+!.env.example
+eval/run-try.csv
+traces/run-try.jsonl
+__pycache__/
+*.py[cod]
+.DS_Store
