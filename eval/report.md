@@ -29,9 +29,9 @@ Lượt 1 dùng `openai/gpt-4o-mini` qua OpenRouter và có 0 lỗi thực thi. 
 
 ## 3. Một lần cải tiến
 
-- Nhắm vào nhóm lỗi: __ — vì sao là nhóm **đau nhất với người dùng**: __
-- Đã sửa gì (có thể vài thay đổi cùng nhắm nhóm lỗi đó): __
-- Kết quả: nhóm lỗi đó __/__ → __/__ · tổng __% → __%
+- Nhắm vào nhóm lỗi: Xác định sai hoặc thiếu ngữ cảnh buổi lab (B20). Tra nhầm ca có thể khiến học viên nhận hướng dẫn sai hoặc hỏi nhầm Lab Coach.
+- Đã sửa gì: Tách lớp và phòng khỏi ca học. Khi thiếu thông tin, hỏi đúng dữ kiện còn thiếu trước khi tra. Ca chỉ được nhắc để mô tả tài liệu chưa đủ để xác định ca học của người hỏi.
+- Kết quả: Lượt 1 B20 trượt. Chờ chấm Lượt 2 trên cùng 24 câu để ghi kết quả B20 và tỷ lệ đạt chung.
 - Câu nào **tệ đi** sau khi sửa: __
 
 ## 4. Còn lại

@@ -157,6 +157,8 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 | 28/11 00:20 | Bổ sung hai ảnh hiện trạng Discord và đồng bộ khai báo dùng AI. | Gắn nguồn quan sát cho §0 và cập nhật phần khai báo ở §10. |
 | 28/11 01:10 | Kiểm tra kiểu dữ liệu `reply`, `reason`, `cited_codes` và chặn model trả sai dữ kiện hạn nộp/repo/link so với nguồn đã tra trong `codebase/agent.py`. | Sửa lỗi crash `.strip()` khi `reply` dạng số và chặn model trả lệch (vd `23:59` thay vì `17:00`) dù trích đúng nguồn. |
 | 28/11 | Chốt 20 phản hồi khảo sát hợp lệ và cập nhật bằng chứng ở §1. | Đối chiếu [tổng hợp bằng chứng](evidence/summary.md) với [log ẩn danh](evidence/survey/results.csv). |
+| 28/11 08:20 | Hỏi lớp và phòng khi thiếu ngữ cảnh thread. Chấp nhận `L3A`/`3A` và `L3B`/`3B`. Khi thiếu ca học, hỏi ca sáng, chiều hoặc tối. | Xác định đúng lớp và phòng trước khi tra. Dữ liệu demo hiện có sáng và chiều, nên câu hỏi về ca tối đi theo luồng thiếu căn cứ. |
+| 28/11 08:45 | Làm rõ ca học trước khi tra nếu câu hỏi chỉ nhắc đến ca dành cho tài liệu. | B20 ở [Lượt 1](eval/report.md#2-lỗi-lượt-1--gom-thành-nhóm-có-tên) trượt vì trợ lý lấy ca của tài liệu làm ca của học viên. |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 

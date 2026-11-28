@@ -11,13 +11,20 @@ from tracing import note
 
 DEMO_DATE = date(2026, 11, 27)
 MOCK_LAB_YEAR = 2027
-THREAD_HEADER = re.compile(r"^\[Thread:\s*(3[AB]-LAB-[A-Z]\d{3})\]\s*", re.IGNORECASE)
+THREAD_HEADER = re.compile(r"^\[Thread:\s*L?(3[AB]-LAB-[A-Z]\d{3})\]\s*", re.IGNORECASE)
+CLASS_CODE = re.compile(r"\bL?(3[AB])\b", re.IGNORECASE)
 ROOM_CODE = re.compile(r"\b([a-z]) (\d{3})\b")
 LAB_CODE = re.compile(r"\blab (?:so )?(?:(demo) )?(\d+)\b")
 LAB_SCOPE = re.compile(r"\b(?:lab|bai thuc hanh|bai nay|de bai)\b")
 DATE_REFERENCE = re.compile(r"(?<!\d)(\d{1,2})/(\d{1,2})(?:/(\d{4}))?(?![\d/])")
 RELATIVE_DATE = re.compile(r"\b(?:hom|sang|chieu|toi|ngay) (qua|nay|mai)\b")
-DETAIL_WORDS = re.compile(r"\b(?:ngay|ca|buoi|sang|chieu|toi|da|em|minh|hoi|la|a|nhe)\b")
+DOCUMENT_SHIFT = re.compile(
+    r"\b(?:d[aà]nh\s+(?:ri[eê]ng\s+)?cho\s+(?:(?:ca|bu[oổ]i)\s+)?"
+    r"|(?:t[aà]i\s+li[eệ]u|h[ưu][oớ]ng\s+d[aẫ]n|readme)\s+(?:c[uủ]a\s+)?(?:ca|bu[oổ]i)\s+)"
+    r"(?:s[aá]ng|chi[eề]u|t[oố]i)\b",
+    re.IGNORECASE,
+)
+DETAIL_WORDS = re.compile(r"\b(?:ngay|ca|buoi|sang|chieu|toi|lop|phong|hoc|da|em|minh|hoi|la|a|nhe)\b")
 URL_PATTERN = re.compile(r"https?://[^\s)\]>\"']+")
 TIME_REFERENCE = re.compile(
     r"(?i)(?<![a-z0-9])(\d{1,2})\s*(?::([0-5]\d)|[hg]([0-5]\d)?|giờ(?:\s*([0-5]\d))?)(?:\s*(sáng|chiều|tối))?\b"
@@ -92,7 +99,9 @@ def _session_date(text: str, query: str) -> str | None:
     return None
 
 
-def _session_shift(text: str, query: str) -> str | None:
+def _session_shift(text: str) -> str | None:
+    text = DOCUMENT_SHIFT.sub(" ", text)
+    query = _normalize(text)
     lab_shifts = set(re.findall(r"\blab (?:so )?\d+ (?:ca |buoi )?(sang|chieu|toi)\b", query))
     if len(lab_shifts) == 1:
         return SHIFTS[lab_shifts.pop()]
@@ -133,14 +142,17 @@ def _mask_contact(text: str) -> str:
 
 
 def _is_detail_reply(question: str, query: str) -> bool:
-    """Chỉ tiếp tục lượt cũ khi phần bổ sung gồm dữ kiện về bài hoặc ca."""
+    """Chỉ tiếp tục lượt cũ khi câu trả lời bổ sung dữ kiện cho buổi lab."""
     if re.fullmatch(r"\d+(?: a)?", query):
         return True
-    has_detail = DATE_REFERENCE.search(question) or RELATIVE_DATE.search(query) or LAB_CODE.search(query)
-    if not has_detail and not _session_shift(question, query):
+    has_detail = (
+        DATE_REFERENCE.search(question) or RELATIVE_DATE.search(query) or LAB_CODE.search(query)
+        or CLASS_CODE.search(question) or ROOM_CODE.search(query)
+    )
+    if not has_detail and not _session_shift(question):
         return False
-    remaining = _normalize(DATE_REFERENCE.sub(" ", question))
-    remaining = LAB_CODE.sub(" ", RELATIVE_DATE.sub(" ", remaining))
+    remaining = _normalize(CLASS_CODE.sub(" ", DATE_REFERENCE.sub(" ", question)))
+    remaining = ROOM_CODE.sub(" ", LAB_CODE.sub(" ", RELATIVE_DATE.sub(" ", remaining)))
     return not DETAIL_WORDS.sub(" ", remaining).strip()
 
 
@@ -513,24 +525,43 @@ def answer(text: str, *, clarification: dict | None = None) -> dict:
 
     if not is_followup:
         previous = {}
+    class_code = thread_id.split("-", 1)[0] if thread_id else previous.get("class_code")
+    if is_followup and detail_only:
+        mentioned_classes = {match.upper() for match in CLASS_CODE.findall(question)}
+        if thread_id and mentioned_classes - {class_code}:
+            return _clarify(previous, f"Thread {thread_id} thuộc lớp L{class_code}. Bạn mở thread đúng lớp hoặc nhập mã thread của lớp bạn nhé.")
+        if not thread_id:
+            if len(mentioned_classes) == 1:
+                class_code = next(iter(mentioned_classes))
+            if class_code and len(mentioned_rooms) == 1 and len(mentioned_classes) <= 1:
+                room = next(iter(mentioned_rooms))
+                thread_id = f"{class_code}-LAB-{room}"
+
     context = {
         "thread_id": thread_id,
+        "class_code": class_code,
         "question": previous.get("question") or question,
         "lab_id": _lab_id(query, allow_number=bool(previous)) or previous.get("lab_id"),
         "topic": topic or previous.get("topic"),
         "session_date": previous.get("session_date"),
-        "shift": _session_shift(question, query) or previous.get("shift"),
+        "shift": _session_shift(question) or previous.get("shift"),
     }
     try:
         context["session_date"] = _session_date(question, query) or previous.get("session_date")
     except ValueError:
         return _clarify(context, "Ngày bạn nhập không hợp lệ. Bạn cho mình ngày diễn ra ca lab nhé.")
 
+    if not thread_id:
+        prompt = (
+            f"Bạn học lab lớp L{class_code} ở phòng nào?"
+            if class_code else "Bạn học lớp L3A hay L3B, và ở phòng lab nào? Ví dụ: L3A, phòng C302."
+        )
+        return _clarify(context, prompt)
+
     for key, prompt in (
-        ("thread_id", "Bạn đang hỏi trong thread phòng lab nào? Trong bản mock, nhập ngữ cảnh [Thread: 3A-LAB-C302]."),
         ("lab_id", "Bạn đang hỏi bài Lab số mấy hoặc tên bài lab nào?"),
         ("session_date", "Bạn đang hỏi ca lab ngày nào?"),
-        ("shift", "Bạn đang hỏi ca sáng, chiều hay tối?"),
+        ("shift", "Bạn học lab ca sáng, chiều hay tối?"),
         ("topic", "Bạn muốn hỏi hạn nộp, cách đặt tên repo, nơi xem hướng dẫn hay sự cố truy cập?"),
     ):
         if not context[key]:
