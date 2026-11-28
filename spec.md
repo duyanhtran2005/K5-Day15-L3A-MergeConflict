@@ -129,10 +129,10 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 
 ## §8. Chi phí khi dùng thật *(guide 4.2)*
 
-- Persona + giá: [cost/personas.yaml](cost/personas.yaml) hiện là mẫu. Dự kiến cập nhật 3 persona từ §2, giá có nguồn của ít nhất 2 model và mô phỏng ≥50 phiên trước CP4.
-- Chi phí / task thành công: Chưa tính. Dùng token đo từ lượt mô phỏng và tỉ lệ đạt của lượt 2 đã chấm.
-- Chi phí / tháng ở quy mô thật: Chưa có kết quả cho kịch bản thấp, cơ sở và cao. Ghi tại [cost/cost-estimate.md](cost/cost-estimate.md) sau mô phỏng.
-- So với impact / người / tháng (§2): Kịch bản tự ước tính là 10 phút thao tác có thể giảm mỗi người mỗi tháng. Chờ số đo impact và chi phí để kết luận.
+- Persona và giá: 3 persona, 2 mức giá model và 50 phiên mô phỏng với seed 42, run ID `simulate-1@20261128-100512`. [Cấu hình](cost/personas.yaml) · [CSV mô phỏng](cost/simulate-1.csv).
+- Chi phí mỗi task thành công là **$0.00021** theo giá `gpt-4o-mini` và **$0.00056** theo giá `gpt-4.1-mini`. Token đo trên `openai/gpt-4o-mini` qua OpenRouter, tỷ lệ đạt lấy từ lượt 2 là 24/24.
+- Chi phí model theo tháng với `gpt-4o-mini` là **$0.0048**, **$0.0095** và **$0.0143** cho ba quy mô 10, 20 và 30 học viên *(tự ước tính)*. [Bảng chi phí cho cả hai model](cost/cost-estimate.md).
+- Ở quy mô cơ sở, chi phí model là **$0.00048/người/tháng**. Nhóm ước tính có thể giảm **10 phút thao tác/người/tháng** theo §2 và cần đo kiểm trong pilot.
 
 ## §9. Rủi ro & an toàn
 
@@ -160,6 +160,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 | 28/11 08:20 | Hỏi lớp và phòng khi thiếu ngữ cảnh thread. Chấp nhận `L3A`/`3A` và `L3B`/`3B`. Khi thiếu ca học, hỏi ca sáng, chiều hoặc tối. | Xác định đúng lớp và phòng trước khi tra. Dữ liệu demo hiện có sáng và chiều, nên câu hỏi về ca tối đi theo luồng thiếu căn cứ. |
 | 28/11 08:45 | Làm rõ ca học trước khi tra nếu câu hỏi chỉ nhắc đến ca dành cho tài liệu. | B20 ở [Lượt 1](eval/report.md#2-lỗi-lượt-1--gom-thành-nhóm-có-tên) trượt vì trợ lý lấy ca của tài liệu làm ca của học viên. |
 | 28/11 | Chấm lượt 2 trên cùng 24 câu và barem sau cải tiến câu hỏi làm rõ. | B15 và B20 chuyển từ trượt sang đạt, tổng tăng từ 22/24 lên 24/24. [So sánh hai lượt](eval/report.md#3-một-lần-cải-tiến). |
+| 28/11 | Mô phỏng 50 phiên chi phí với tỷ lệ đạt của lượt 2. | Run ID `simulate-1@20261128-100512`. [Báo cáo chi phí](cost/cost-estimate.md). |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 

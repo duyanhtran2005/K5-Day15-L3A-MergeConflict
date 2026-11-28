@@ -1,38 +1,35 @@
 # Chi phí khi dùng thật
 
-> Điền ở guide bước 4.2, nộp ở CP4 14:30 Thứ Bảy 28/11. Ôn lại: ngày 13, ngày 1, ngày 14 · lab ngày 13, lab ngày 14. Chấm ở rubric R6.
-> Số **không điền tay**: điền `cost/personas.yaml` → `python run.py simulate` → chép bảng trong `cost/simulate-N-summary.md` vào đây.
-> Lúc build dùng gói miễn phí vẫn tính theo **giá gói trả phí** — đây là chi phí cho lúc đưa vào dùng thật.
-
 ## 1. Đầu vào
 
-- **Persona** (`cost/personas.yaml`): ≥3 kiểu — tỉ lệ, số phiên / người / tháng, số lượt hỏi / phiên. Nguồn: __
-- **Số người dùng thật** 3 kịch bản: thấp __ · cơ sở __ · cao __. Nguồn: __
-- **Giá** ≥2 mức model (từ `further-reading/model-prices.md` của repo đề, có link + ngày xem): __ · __
-- **Tỉ lệ đạt** dùng để tính: __/__ (__%) — lượt `run-__` (lượt 2)
-- Đo token trên model __, tính giá model __ và __
+| Persona | Tỷ lệ người dùng | Phiên / người / tháng | Lượt hỏi / phiên |
+|---|---:|---:|---:|
+| Dùng ít | 50% | 1 | 1 |
+| Dùng vừa | 30% | 2 | 2 |
+| Dùng nhiều | 20% | 4 | 3 |
+
+Tỷ lệ, số phiên và số lượt hỏi trong bảng là *(tự ước tính)*. Ba kịch bản quy mô là **10**, **20** và **30 học viên** có khả năng sử dụng mỗi tháng, tương ứng thấp, cơ sở và cao. Quy mô cũng là *(tự ước tính)*. Khảo sát đo trải nghiệm hỗ trợ gấp ngoài lớp và chưa đo tần suất sử dụng trợ lý theo tháng. [Cấu hình persona](personas.yaml) · [Giả định trong §2](../spec.md) · [Tổng hợp khảo sát](../evidence/summary.md).
+
+| Model tính giá | USD / 1 triệu token vào | USD / 1 triệu token ra | Nguồn giá, tra ngày 28/11/2026 |
+|---|---:|---:|---|
+| `gpt-4o-mini` | 0.15 | 0.60 | [OpenAI GPT-4o mini](https://developers.openai.com/api/docs/models/gpt-4o-mini) |
+| `gpt-4.1-mini` | 0.40 | 1.60 | [OpenAI GPT-4.1 mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini) |
+
+Mô phỏng dùng tỷ lệ đạt **24/24 (100%)** từ lượt `run-2@20261128-092151`, ghi model `gpt-4o-mini`. [CSV lượt 2 đã chấm](../eval/run-2.csv).
 
 ## 2. Kết quả mô phỏng
 
-Lượt mô phỏng: `cost/simulate-__.csv` · run ID __ · __ phiên · seed __
+Lượt `simulate-1@20261128-100512` chạy **50 phiên**, gồm 91 lượt hỏi, với seed **42** và **0 phiên lỗi**. [CSV mô phỏng](simulate-1.csv) · [Bản tóm tắt tự sinh](simulate-1-summary.md) · [Trace](../traces/simulate-1.jsonl).
 
-*(dán bảng từ `cost/simulate-N-summary.md`)*
+| Model (giá) | Chi phí / phiên | Chi phí / task thành công | Chi phí / câu hỏi đạt | Chi phí / tháng — thấp (10 người) | Chi phí / tháng — cơ sở (20 người) | Chi phí / tháng — cao (30 người) | Chi phí / người / tháng (cơ sở) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| gpt-4o-mini (vào 0.15 · ra 0.6 $/1M) | $0.00021 | $0.00021 | $0.00012 | $0.0048 | $0.0095 | $0.0143 | $0.00048 |
+| gpt-4.1-mini (vào 0.4 · ra 1.6 $/1M) | $0.00056 | $0.00056 | $0.00031 | $0.0127 | $0.0254 | $0.0382 | $0.0013 |
 
-| Model | Chi phí / phiên | Chi phí / task thành công | / tháng — thấp | / tháng — cơ sở | / tháng — cao | / người / tháng (cơ sở) |
-|---|---|---|---|---|---|---|
-| | | | | | | |
-| | | | | | | |
-
-Chi phí / task thành công = chi phí trung bình mỗi phiên ÷ tỉ lệ đạt — **không coi như đạt 100%**.
+Chi phí mỗi task thành công bằng chi phí trung bình mỗi phiên chia cho tỷ lệ đạt của lượt 2. Mô phỏng đo token trên `openai/gpt-4o-mini` qua OpenRouter. Khung ghi cảnh báo vì định danh này khác định danh `gpt-4o-mini` trong lượt 2. Dòng `gpt-4.1-mini` áp giá niêm yết của model đó lên lượng token đã đo.
 
 ## 3. So với impact
 
-- Impact / người / tháng (`spec.md` §2): __
-- Chi phí / người / tháng (cơ sở, model __): __
-- **Kết luận một dòng — đáng làm không:** __
-
-## 4. *(Muốn sâu hơn, không bắt buộc)*
-
-- Bảng độ nhạy: model rẻ hơn · cache · cắt ngữ cảnh · giới hạn bước — mỗi cần gạt đổi chi phí bao nhiêu
-- Chi phí ngoài model: hosting, lưu trữ, giờ công người duyệt
-- Quy mô nào thì bài toán còn đáng làm
+- Impact dự kiến là **10 phút thao tác có thể giảm mỗi người mỗi tháng** *(tự ước tính)*. [Giả định trong §2](../spec.md).
+- Ở kịch bản cơ sở, chi phí token theo giá `gpt-4o-mini` là **$0.00048/người/tháng**.
+- **Kết luận.** Chi phí token ở quy mô thử nghiệm thấp. Nhóm có thể chạy pilot nhỏ để đo thời gian thực tế giảm được trước khi quyết định mở rộng.
