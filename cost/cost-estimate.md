@@ -12,8 +12,8 @@ Tỷ lệ, số phiên và số lượt hỏi trong bảng là *(tự ước tí
 
 | Model tính giá | USD / 1 triệu token vào | USD / 1 triệu token ra | Nguồn giá, tra ngày 28/11/2026 |
 |---|---:|---:|---|
-| `gpt-4o-mini` | 0.15 | 0.60 | [OpenAI GPT-4o mini](https://developers.openai.com/api/docs/models/gpt-4o-mini) |
-| `gpt-4.1-mini` | 0.40 | 1.60 | [OpenAI GPT-4.1 mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini) |
+| `gpt-4o-mini` | 0.15 | 0.60 | [OpenRouter GPT-4o mini](https://openrouter.ai/openai/gpt-4o-mini) |
+| `gpt-4.1-mini` | 0.40 | 1.60 | [OpenRouter GPT-4.1 mini](https://openrouter.ai/openai/gpt-4.1-mini) |
 
 Mô phỏng dùng tỷ lệ đạt **24/24 (100%)** từ lượt `run-2@20261128-092151`, ghi model `gpt-4o-mini`. [CSV lượt 2 đã chấm](../eval/run-2.csv).
 
