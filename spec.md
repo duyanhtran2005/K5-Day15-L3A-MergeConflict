@@ -20,7 +20,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 - Việc họ cố làm xong: Xác định hạn nộp, cách đặt tên repo hoặc nơi xem hướng dẫn của đúng bài lab để tiếp tục làm và nộp bài. Nếu gặp lỗi khi làm bài, học viên cần biết nên hỏi ai để được hỗ trợ.
 - Cách xử lý hiện tại: Học viên tự tìm trong thông báo và các đoạn trao đổi, đăng câu hỏi trong thread phòng lab, hoặc tạo ticket nếu cần hỗ trợ riêng.
 - Pain: Khi đang làm bài hoặc sắp nộp lab, học viên AI20K có thể phải dò qua Discord, LMS và GitHub để biết hướng dẫn nào đang áp dụng. Nếu các nguồn ghi khác nhau, như quy định đặt tên repo trên LMS và GitHub không khớp, học viên phải hỏi lại rồi chờ xác nhận. Việc làm bài bị gián đoạn và thời gian còn lại trước hạn nộp bị rút ngắn.
-- Bằng chứng sơ bộ: Trong 7 phản hồi khảo sát, 5/7 mất thời gian tìm thông tin hoặc chọn kênh hỏi, 5/7 phải chờ người phụ trách phản hồi và 2/7 xác nhận đã tạo ticket. Một học viên (S05) kể rằng hướng dẫn đặt tên repo trên GitHub và LMS khác nhau sát giờ nộp. Kết quả mô tả 7 phản hồi đã nhận. Mẫu khảo sát hiện chưa đạt ngưỡng bằng chứng CP3. Xem [tổng hợp bằng chứng](evidence/summary.md).
+- Bằng chứng khảo sát hỗ trợ gấp ngoài lớp: Trong 20 phản hồi của học viên L3A ngoài nhóm, 14/20 mất thời gian tìm thông tin hoặc kênh hỏi, 13/20 chờ người phụ trách phản hồi và 15/20 mất ít nhất 15 phút mới có hướng xử lý. S05 kể rằng hướng dẫn đặt tên repo trên GitHub và LMS khác nhau sát giờ nộp. Kết quả ủng hộ việc ưu tiên câu trả lời kèm nguồn và hướng học viên đến đúng người phụ trách. [Tổng hợp bằng chứng](evidence/summary.md).
 
 ## §2. Impact & quyết định chọn *(guide 1.3)*
 
@@ -136,7 +136,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 
 ## §9. Rủi ro & an toàn
 
-- Dữ liệu: Bằng chứng sơ bộ gồm 7 phản hồi khảo sát. Prototype dùng tin nhắn và lịch giả lập. Khi dùng ví dụ thật, bỏ tên, mã học viên, email và số điện thoại trước khi đưa vào repo công khai hoặc gửi sang model. Không thu mật khẩu, khóa API hoặc thông tin cá nhân không cần để định tuyến.
+- Dữ liệu: Bằng chứng khảo sát gồm 20 phản hồi trong mẫu phân tích. Prototype dùng tin nhắn và lịch giả lập. Khi dùng ví dụ thật, bỏ tên, mã học viên, email và số điện thoại trước khi đưa vào repo công khai hoặc gửi sang model. Không thu mật khẩu, khóa API hoặc thông tin cá nhân không cần để định tuyến. [Log phản hồi ẩn danh](evidence/survey/results.csv).
 - AI **không được** gửi tin, tạo ticket thật, đăng lên kênh chung, lộ danh bạ riêng, tự bịa nguồn hoặc chọn người ngoài phân công đã kiểm tra.
 - Học viên có thể bị chậm hỗ trợ và lộ nội dung. Coach có thể nhận nhầm yêu cầu ngoài ca. Chặn bằng kiểm tra nguồn, khớp lịch theo ngày/lớp/ca/phòng, lọc dữ liệu và duyệt bản nháp.
 
@@ -156,6 +156,7 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 | 28/11 00:07 | Nối model thật vào `codebase/ai.py` và bước đánh giá nguồn / chọn bước xử lý ở `codebase/agent.py`; giữ khóa tra theo thread, từ chối ngoài chủ đề và kiểm tra lịch coach theo phòng/ngày/ca. | Bước CP3 theo §4; đã chạy thử với `gpt-4o-mini` qua `eval --try` và `B01`–`B12`. |
 | 28/11 00:20 | Bổ sung hai ảnh hiện trạng Discord và đồng bộ khai báo dùng AI. | Gắn nguồn quan sát cho §0 và cập nhật phần khai báo ở §10. |
 | 28/11 01:10 | Kiểm tra kiểu dữ liệu `reply`, `reason`, `cited_codes` và chặn model trả sai dữ kiện hạn nộp/repo/link so với nguồn đã tra trong `codebase/agent.py`. | Sửa lỗi crash `.strip()` khi `reply` dạng số và chặn model trả lệch (vd `23:59` thay vì `17:00`) dù trích đúng nguồn. |
+| 28/11 | Chốt 20 phản hồi khảo sát hợp lệ và cập nhật bằng chứng ở §1. | Đối chiếu [tổng hợp bằng chứng](evidence/summary.md) với [log ẩn danh](evidence/survey/results.csv). |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
