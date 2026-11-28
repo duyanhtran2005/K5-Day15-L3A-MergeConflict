@@ -12,7 +12,7 @@ Thành viên nhóm kiểm tra hành vi của bản chạy thử, đối chiếu 
 |---|---|---|---|---|
 | Code bản chạy thử | Codex | Hỗ trợ rà code và đối chiếu luồng với đặc tả. | Kiểm tra nhánh trả lời, hỏi thêm, gợi ý coach và từ chối qua benchmark và trace. | Trần Dương Trung Tính |
 | Prompt / thiết kế lời gọi mô hình | GPT-4o mini qua OpenRouter | Trong bản chạy thử, đánh giá căn cứ đã tra và đề xuất nội dung trả lời hoặc bước xử lý. | Kiểm tra cấu trúc dữ liệu model trả về và đối chiếu câu trả lời với nguồn. | Trần Dương Trung Tính |
-| Rà câu hỏi phỏng vấn / khảo sát | Codex | — | Kiểm tra bộ câu hỏi khảo sát và xác nhận 20 phản hồi thuộc mẫu phân tích. | Nguyễn Nhựt Linh |
+| Rà câu hỏi phỏng vấn / khảo sát | Codex | Hỗ trợ rà câu chữ trong bộ câu hỏi khảo sát. | Kiểm tra bộ câu hỏi khảo sát và xác nhận 20 phản hồi thuộc mẫu phân tích. | Nguyễn Nhựt Linh |
 | Viết câu thử (benchmark) | Codex | Hỗ trợ soạn và rà câu thử. | Kiểm tra `source` và tiêu chí `pass_criterion` cho từng câu. | Nguyễn Nhựt Linh |
 | Slide, văn bản | Gamma, Codex | Gamma dựng bản nháp slide. Codex hỗ trợ rà câu chữ và tài liệu. | Đối chiếu số liệu trên slide với báo cáo đánh giá và báo cáo chi phí. | Trần Anh Duy |
 

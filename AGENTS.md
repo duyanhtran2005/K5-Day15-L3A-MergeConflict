@@ -40,6 +40,6 @@ Khung chỉ dùng thư viện chuẩn của Python. Thêm thư viện thì ghi v
 
 ## Quy ước của nhóm
 
-- Ngôn ngữ trả lời người dùng: __
-- Phong cách code / đặt tên: __
-- Ai duyệt thay đổi do agent tạo trước khi commit: __
+- Ngôn ngữ trả lời người dùng: Tiếng Việt.
+- Phong cách code / đặt tên: Theo code Python hiện có, dùng `snake_case` cho hàm và biến, `UPPER_CASE` cho hằng số.
+- Ai duyệt thay đổi do agent tạo trước khi commit: Thành viên phụ trách phần việc kiểm tra thay đổi của mình. Trần Anh Duy rà bản nộp chung.

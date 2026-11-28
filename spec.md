@@ -169,4 +169,4 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 
 | Thời điểm | Đổi gì | Vì sao |
 |---|---|---|
-| Chưa đến CP4 | Chưa có thay đổi sau CP4 | |
+| 28/11 21:45 | Bổ sung reflection theo template và hoàn thiện các mục hồ sơ còn trống. | Ghi lại giả thuyết từ canvas CP1, cập nhật trạng thái hồ sơ và bổ sung reflection cá nhân cho bản nộp cuối. |
