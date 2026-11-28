@@ -1,4 +1,4 @@
-# Reflection — Trương Lợi Vi
+# Reflection — Trương Lợi Vĩ
 
 > Làm ở guide bước 5.3. Mỗi người một file: chép file này thành `reflection/<ten-khong-dau>.md` (viết thường, không dấu). Hạn: **23:59 Thứ Bảy 28/11**. Mỗi câu 3–6 dòng.
 
