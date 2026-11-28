@@ -162,6 +162,8 @@ Data BTC cấp đã dùng: Tham chiếu ca phòng chờ xác nhận trong lịch
 | 28/11 | Chấm lượt 2 trên cùng 24 câu và barem sau cải tiến câu hỏi làm rõ. | B15 và B20 chuyển từ trượt sang đạt, tổng tăng từ 22/24 lên 24/24. [So sánh hai lượt](eval/report.md#3-một-lần-cải-tiến). |
 | 28/11 | Mô phỏng 50 phiên chi phí với tỷ lệ đạt của lượt 2. | Run ID `simulate-1@20261128-100512`. [Báo cáo chi phí](cost/cost-estimate.md). |
 | 28/11 | Đối chiếu và cập nhật nguồn giá hai model sang OpenRouter. | Giá niêm yết khớp bản mô phỏng 50 phiên đã ghi trong [báo cáo chi phí](cost/cost-estimate.md). |
+| 28/11 | Đồng bộ phạm vi tra cứu và bước học viên xác nhận tag mô phỏng trong `canvas.md` với `spec.md` §4. | Làm rõ luồng demo CP4 theo đúng thread phòng lab, minh họa bằng B01 và B20. |
+| 28/11 | Điền khai báo dùng AI, cập nhật hướng dẫn chạy OpenRouter trên `main` và làm rõ nguồn dữ liệu mô phỏng. | Đối chiếu với CSV cục bộ, báo cáo quan sát Discord và ca thử B07–B08. |
 
 **Sau CP4 (đến 23:59 Thứ Bảy 28/11)** (sửa theo góp ý — không sửa chuẩn "đạt", câu thử, số bằng chứng, kết quả các lượt đã chạy)
 
