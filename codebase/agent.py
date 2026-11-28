@@ -20,7 +20,9 @@ DATE_REFERENCE = re.compile(r"(?<!\d)(\d{1,2})/(\d{1,2})(?:/(\d{4}))?(?![\d/])")
 RELATIVE_DATE = re.compile(r"\b(?:hom|sang|chieu|toi|ngay) (qua|nay|mai)\b")
 DOCUMENT_SHIFT = re.compile(
     r"\b(?:d[aà]nh\s+(?:ri[eê]ng\s+)?cho\s+(?:(?:ca|bu[oổ]i)\s+)?"
-    r"|(?:t[aà]i\s+li[eệ]u|h[ưu][oớ]ng\s+d[aẫ]n|readme)\s+(?:c[uủ]a\s+)?(?:ca|bu[oổ]i)\s+)"
+    r"|(?:t[aà]i\s+li[eệ]u|h[ưu][oớ]ng\s+d[aẫ]n|readme)"
+    r"(?:\s+h[ưu][oớ]ng\s+d[aẫ]n|\s+lab(?:\s+s[oố])?\s+\d+)*\s+"
+    r"(?:(?:d[aà]nh\s+(?:ri[eê]ng\s+)?cho|c[uủ]a)\s+)?(?:ca|bu[oổ]i)\s+)"
     r"(?:s[aá]ng|chi[eề]u|t[oố]i)\b",
     re.IGNORECASE,
 )
@@ -70,18 +72,21 @@ def _normalize(text: str) -> str:
 
 def _topic(query: str) -> str | None:
     lab_context = LAB_SCOPE.search(query)
-    if re.search(r"\b(?:tai lieu|lms|de bai|file lab|link bai|repo lab|lab coach)\b", query) and re.search(
-        r"\b(?:khong|chua) (?:the )?(?:truy cap|mo duoc|xem duoc|vao duoc)\b|"
-        r"\b(?:truy cap|mo|vao) khong duoc\b|\b(?:loi truy cap|nho lab coach)\b",
-        query,
-    ):
+    if (
+        re.search(r"\b(?:tai lieu|lms|de bai|file lab|link bai|repo lab|lab coach)\b", query)
+        and re.search(
+            r"\b(?:khong|chua) (?:the )?(?:truy cap|mo duoc|xem duoc|vao duoc)\b|"
+            r"\b(?:truy cap|mo|vao) khong duoc\b|\b(?:loi truy cap|nho lab coach)\b",
+            query,
+        )
+    ) or (lab_context and re.search(r"\b(?:bi ket|gap loi|khong chay)\b", query)):
         return "su_co_truy_cap_lab"
+    if re.search(r"\b(?:repo|repository)\b", query) and re.search(r"\b(?:dat ten|ten repo|ten repository|mau(?: ten)? repo)\b", query):
+        return "ten_repo_lab"
     if re.search(r"\bhan nop(?: bai)?(?: voi| la| luc| khi| may| bao| a| nhe| vay| cua lab|$)\b", query) or (
         lab_context and re.search(r"\b(?:han nop|deadline|chot gio nao|chot may gio)\b|\bnop\b.*\b(?:khi nao|luc nao|may gio|bao gio)\b", query)
     ):
         return "han_nop_lab"
-    if re.search(r"\b(?:repo|repository)\b", query) and re.search(r"\b(?:dat ten|ten repo|ten repository)\b", query):
-        return "ten_repo_lab"
     if lab_context and re.search(r"\b(?:lms|huong dan|tai lieu|de bai|github)\b", query):
         return "huong_dan_lab"
     return None
@@ -118,6 +123,34 @@ def _result(decision: str, message: str, **details) -> dict:
     note(label)
     prefix = "[Mock CP2 · dữ liệu mẫu]" if current_provider() == "fake" else "[Trợ lý lab · dữ liệu mẫu]"
     return {"output": f"{prefix}\n{label}\n{message}", "decision": decision, **details}
+
+
+def _reported_issue_clause(question: str) -> str:
+    """Trích ngắn gọn vướng mắc học viên đã nêu (đã che dữ liệu nhạy cảm) để ghi nhận khi hỏi thêm."""
+    masked = _mask_contact(question or "").strip()
+    if not masked:
+        return ""
+    first_sentence = next((part.strip() for part in re.split(r"[.!?\n]+", masked) if part.strip()), "")
+    if len(first_sentence) < 10:
+        return ""
+    return first_sentence[:120].rstrip()
+
+
+def _clarification_prompt(key: str, default_prompt: str, context: dict) -> str:
+    """Tạo câu hỏi bổ sung giữ nguyên ngữ cảnh học viên đã cung cấp."""
+    if key == "lab_id" and context.get("topic") == "su_co_truy_cap_lab":
+        issue = _reported_issue_clause(context.get("question", ""))
+        if issue:
+            return f'Mình đã ghi nhận vướng mắc bạn vừa nêu ("{issue}"). {default_prompt}'
+    if key == "shift":
+        parts = []
+        if context.get("lab_id"):
+            parts.append(context["lab_id"].replace("-", " ").title())
+        if context.get("session_date"):
+            parts.append(f'ngày {date.fromisoformat(context["session_date"]):%d/%m/%Y}')
+        if parts:
+            return f'Với {" ".join(parts)}, {default_prompt[:1].casefold()}{default_prompt[1:]}'
+    return default_prompt
 
 
 def _clarify(context: dict, message: str) -> dict:
@@ -565,7 +598,7 @@ def answer(text: str, *, clarification: dict | None = None) -> dict:
         ("topic", "Bạn muốn hỏi hạn nộp, cách đặt tên repo, nơi xem hướng dẫn hay sự cố truy cập?"),
     ):
         if not context[key]:
-            return _clarify(context, prompt)
+            return _clarify(context, _clarification_prompt(key, prompt, context))
 
     sources = search_lab_thread(thread_id, context["lab_id"], context["session_date"], context["shift"], context["topic"])
     evaluated = _evaluate_sources(context, room, sources)
